@@ -68,7 +68,7 @@ export function Register() {
     setToast(
       <Toaster message="Register account success ! verify it" type="success" />
     );
-    setCookie("_userNeedVerify", getRefValue(email), 1);
+    setCookie("_userNeedVerified", getRefValue(email), 1);
     setTimeout(() => {
       setSubmitState(signUpBtn);
     }, 500);
@@ -79,8 +79,8 @@ export function Register() {
 
   function userSignUp() {
     setSubmitState(
-      <span className="d-inline-block mt-2 mb-5" style={{ height: "40px" }}>
-        <BeatLoader color="white" speedMultiplier={0.5} size="10" />
+      <span className="d-inline-block mt-5 mb-5" style={{ height: "40px" }}>
+        <BeatLoader color="red" speedMultiplier={0.5} size="10" />
       </span>
     );
     callApi();

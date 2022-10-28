@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap');
+
+.d-flex {
+    display: flex;
+}
+
+.t-main {
+    color: #0283b5;
+}
+
+.f-column {
+    flex-direction: column;
+}
+
+.mt-1 {
+    margin-top: 10px;
+}
+
+.mt-2 {
+    margin-top: 20px;
+}
+
+.justify-content-center {
+    justify-content: center;
+}
+
+.justify-content-between {
+    justify-content: space-between;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+.full__screen {
+    width: 100vw;
+    height: 100vh;
+    background-color: #f1f1f1 !important;
+}
+
+.admin__login__form {
+    background-color: white !important;
+    width: 350px;
+    height: 280px;
+    padding: 30px 30px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
+}
+
+.t-secondary {
+    color: #3f3f3f;
+}
+
+.input__group {
+    border: 1px solid #3f3f3f;
+    padding: 10px 0px;
+    margin-top: 5px;
+}
+
+.input__group input {
+    border: none;
+    box-sizing: border-box;
+    outline: none;
+    padding-left: 10px;
+    width: 90%;
+}
+
+.input__group i {
+    font-size: 15px;
+    color: #3f3f3f;
+}
+
+.login__button {
+    background-color: #0283b5;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 2px !important;
+    cursor: pointer;
+}
+
+.login__button:hover {
+    background-color: #026d97;
+    transition: .3s ease-in;
+}
+
+.admin__login__header { 
+    color: #0283b5;
+    border-radius: 50%;
+    font-size: 30px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}

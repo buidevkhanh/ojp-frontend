@@ -1072,6 +1072,22 @@ ol {
 	list-style: none;
 }
 
+.cursor {
+	cursor: pointer;
+	user-select: none;
+}
+
+
+.link-active {
+	background-color: white !important;
+	border-top-right-radius: 22px;
+	border-bottom-right-radius: 22px;
+}
+
+.link-active i, .link-active span{
+	color: #1F3BB3 !important;
+}
+
 .pricing__item .primary-btn {
 	color: #111111;
 	background: #f2f2f2;
@@ -1215,9 +1231,46 @@ ol {
 	line-height: 40px;
 }
 
+.override-screen {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100vw;
+	z-index: 1080!important;
+	background-color: rgba(0,0,0,0.85);
+}
+
+.testcase-preview {
+	background-color: #efefef;
+}
+
+.nav-link {
+	cursor:  pointer !important;
+}
+
+.btn-primary{
+	color: #f1f1f1 !important;
+}
+
+.preview::after {
+	content: '';
+	display: block;
+	border: 20px !important;
+}
+
 .plan__text ul li span {
 	margin-right: 5px;
 	color: #4c57d6;
+}
+
+.preview-img {
+	width: 40px;
+	height: 40px;
+	border: 1px solid #333;
 }
 
 /*---------------------

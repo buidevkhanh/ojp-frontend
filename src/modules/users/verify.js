@@ -1,10 +1,17 @@
 import { useRef, useState } from "react";
+import { callActiveAccount } from "../../api/auth.api";
+import { getCookie } from "../../helpers/cookie.helper";
+import { getRefValue } from "../../helpers/string.helper";
 import Footer from "../commons/footer";
+import { Toaster } from "../commons/toast";
 
 export function VerifyAccount() {
   const verifySubmitActive = (
     <div
-      onClick={() => handleSubmit()}
+      onClick={() => {
+        handleSubmit();
+        countDown();
+      }}
       className="verify__submit__input text-center"
       value="Verify E-mail"
     >
@@ -23,6 +30,8 @@ export function VerifyAccount() {
 
   const [submit, setSubmit] = useState(verifySubmitActive);
   const [remain, setRemain] = useState(0);
+  const [wait, setWait] = useState(false);
+  const [toast, setToast] = useState(<></>);
   function handleInputChange() {
     if (_code.current.value.length === 5) {
       document
@@ -36,24 +45,55 @@ export function VerifyAccount() {
   }
   function handleSubmit() {
     setSubmit(verifySubmitInactive);
-    countDown();
+    callActiveAccount(getCookie("_userNeedVerified"), getRefValue(_code))
+      .then(() => {
+        setToast(
+          <Toaster
+            message="active account success, please login"
+            type="error"
+          />
+        );
+        window.location.replace("/auths/sign-in");
+      })
+      .catch((error) => {
+        setToast(
+          <Toaster
+            message={
+              error.response.status !== 0
+                ? error.response.data.message
+                  ? error.response.data.message
+                  : error.message
+                : error.message
+            }
+            type="error"
+          />
+        );
+      })
+      .finally(() => {
+        setSubmit(verifySubmitActive);
+      });
   }
   function countDown() {
-    const nextMock = new Date(
-      new Date().setMinutes(new Date().getMinutes() + 1)
-    );
-    const countRemain = setInterval(() => {
-      if (new Date() - nextMock < 0) {
-        setRemain(Math.ceil((nextMock - new Date()) / 1000));
-      } else {
-        setSubmit(verifySubmitActive);
-        setRemain(0);
-        clearInterval(countRemain);
-      }
-    }, 1000);
+    if (!wait) {
+      const nextMock = new Date(
+        new Date().setMinutes(new Date().getMinutes() + 1)
+      );
+      const countRemain = setInterval(() => {
+        if (new Date() - nextMock < 0) {
+          setRemain(Math.ceil((nextMock - new Date()) / 1000));
+        } else {
+          setSubmit(verifySubmitActive);
+          setRemain(0);
+          clearInterval(countRemain);
+          setWait(false);
+        }
+      }, 1000);
+      setWait(() => true);
+    }
   }
   return (
     <>
+      {toast}
       <div className="container">
         <div className="site__logo">Online Judge System OJS</div>
         <div className="verify__header text-center text-center">

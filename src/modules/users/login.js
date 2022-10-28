@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
-import { callSignIn } from "../../api/auth.api";
-import { setCookie } from "../../helpers/cookie.helper";
+import { callResendCode, callSignIn } from "../../api/auth.api";
+import { getCookie, setCookie } from "../../helpers/cookie.helper";
 import { getRefValue } from "../../helpers/string.helper";
 import { Toaster } from "../commons/toast";
 
@@ -34,6 +34,30 @@ export function Login() {
               type="error"
             />
           );
+          if (
+            error?.response?.data?.message?.includes("not_verfied") ||
+            error?.response?.data?.message?.includes("not_verified")
+          ) {
+            setCookie("_userNeedVerified", nameOrEmailTxt);
+            callResendCode(getCookie("_userNeedVerified"))
+              .then(() => {
+                window.location.replace("/auths/verify");
+              })
+              .catch((error) => {
+                setToast(
+                  <Toaster
+                    message={
+                      error.response.status !== 0
+                        ? error.response.data.message
+                          ? error.response.data.message
+                          : error.message
+                        : error.message
+                    }
+                    type="error"
+                  />
+                );
+              });
+          }
         });
     } else {
       setToast(
