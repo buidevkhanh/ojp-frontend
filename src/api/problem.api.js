@@ -9,11 +9,34 @@ import {
 } from "../configs/app.config";
 import { getCookie } from "../helpers/cookie.helper";
 
-export function callCreateCategory(params) {
+export function callGetProblem(page) {
+  const token = getCookie("_token");
   return new Promise((resolve, reject) => {
     axios({
-      url: `${SERVER_HOST}${SERVER_PREFIX}/admin/category`,
+      url: `${SERVER_HOST}${SERVER_PREFIX}/admin/problem?page=${page}&pageSize=20`,
+      method: GET,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((data) => {
+        resolve(data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
+export function callCreateProblem(params) {
+  const token = getCookie("_token");
+  return new Promise((resolve, reject) => {
+    axios({
+      url: `${SERVER_HOST}${SERVER_PREFIX}/admin/problem`,
       method: POST,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
       data: params,
     })
       .then((data) => {
@@ -25,12 +48,12 @@ export function callCreateCategory(params) {
   });
 }
 
-export function callGetCategory(page) {
+export function callChangeStatus(id) {
   const token = getCookie("_token");
   return new Promise((resolve, reject) => {
     axios({
-      url: `${SERVER_HOST}${SERVER_PREFIX}/admin/category?page=${page}&pageSize=20`,
-      method: GET,
+      url: `${SERVER_HOST}${SERVER_PREFIX}/admin/problem/${id}/status`,
+      method: PATCH,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -44,56 +67,11 @@ export function callGetCategory(page) {
   });
 }
 
-export function callRemoveCategory(id) {
+export function callUpdateProblem(id, data) {
   const token = getCookie("_token");
   return new Promise((resolve, reject) => {
     axios({
-      url: `${SERVER_HOST}${SERVER_PREFIX}/admin/category/${id}`,
-      method: DELETE,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((data) => {
-        resolve(data);
-      })
-      .catch((error) => {
-        reject(error);
-      });
-  });
-}
-
-export function callCategoryDetail(id) {
-  const token = getCookie("_token");
-  return new Promise((resolve, reject) => {
-    axios({
-      url: `${SERVER_HOST}${SERVER_PREFIX}/admin/category/${id}`,
-      method: GET,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((data) => {
-        resolve(data);
-      })
-      .catch((error) => {
-        reject(error);
-      });
-  });
-}
-
-export function callUpdateCategory(categoryId, categoryLogo, categoryName) {
-  const token = getCookie("_token");
-  return new Promise((resolve, reject) => {
-    const data = {
-      categoryId,
-      categoryLogo,
-      categoryName,
-    };
-    if (!categoryLogo) delete data.categoryLogo;
-    if (!categoryName) delete data.categoryName;
-    axios({
-      url: `${SERVER_HOST}${SERVER_PREFIX}/admin/category`,
+      url: `${SERVER_HOST}${SERVER_PREFIX}/admin/problem/${id}`,
       method: PATCH,
       headers: {
         Authorization: `Bearer ${token}`,
@@ -109,12 +87,12 @@ export function callUpdateCategory(categoryId, categoryLogo, categoryName) {
   });
 }
 
-export function callChangeCategory(id) {
+export function callProblemDetail(id) {
   const token = getCookie("_token");
   return new Promise((resolve, reject) => {
     axios({
-      url: `${SERVER_HOST}${SERVER_PREFIX}/admin/category/${id}/status`,
-      method: PATCH,
+      url: `${SERVER_HOST}${SERVER_PREFIX}/admin/problem/${id}`,
+      method: GET,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -128,14 +106,59 @@ export function callChangeCategory(id) {
   });
 }
 
-export function callGetAllCategory(filter) {
+export function callProblemUpdate(id, data) {
   const token = getCookie("_token");
   return new Promise((resolve, reject) => {
     axios({
-      url: `${SERVER_HOST}${SERVER_PREFIX}/admin/category?pageSize=-1&${filter}`,
-      method: "GET",
+      url: `${SERVER_HOST}${SERVER_PREFIX}/admin/problem/${id}`,
+      method: PATCH,
       headers: {
         Authorization: `Bearer ${token}`,
+      },
+      data,
+    })
+      .then((data) => {
+        resolve(data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
+export function callDeteletTestcase(testcases) {
+  const token = getCookie("_token");
+  return new Promise((resolve, reject) => {
+    axios({
+      url: `${SERVER_HOST}${SERVER_PREFIX}/admin/problem/testcase`,
+      method: DELETE,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        testcaseIds: testcases,
+      },
+    })
+      .then((data) => {
+        resolve(data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
+export function callAddTestcase(problemId, testcases) {
+  const token = getCookie("_token");
+  return new Promise((resolve, reject) => {
+    axios({
+      url: `${SERVER_HOST}${SERVER_PREFIX}/admin/problem/testcase/${problemId}`,
+      method: POST,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        testcases: testcases,
       },
     })
       .then((data) => {

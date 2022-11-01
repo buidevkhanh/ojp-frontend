@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { FormType } from "../../helpers/object.helper";
 import AddProblem from "./forms/addProblem";
 import CategoryForm from "./forms/category-form";
+import ProblemDetail from "./forms/problem-detail";
 
 function Form(props) {
   const [form, setForm] = useState(<></>);
@@ -12,6 +13,8 @@ function Form(props) {
         setForm(
           <AddProblem
             closeForm={props.closeForm}
+            action={props.action}
+            id={props.id}
             title={"Add Problem"}
             description={
               "Problems in this page is execise that user can resolve it with their way by their code"
@@ -29,6 +32,12 @@ function Form(props) {
             title={"Manage categories"}
             description={"Category to group a set of problems with same types"}
           ></CategoryForm>
+        );
+        break;
+      }
+      case FormType.PROBLEM_DETAIL: {
+        setForm(
+          <ProblemDetail info={props.info} closeForm={props.closeForm} />
         );
         break;
       }

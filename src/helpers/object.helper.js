@@ -7,6 +7,7 @@ export const AdminScreen = {
 export const FormType = {
   PROBLEM: "problem",
   CATEGORY: "category",
+  PROBLEM_DETAIL: "problem_detail",
 };
 
 export const AppAction = {
