@@ -44,6 +44,21 @@ export function callGetCategory(page) {
   });
 }
 
+export function userGetCategory(page) {
+  return new Promise((resolve, reject) => {
+    axios({
+      url: `${SERVER_HOST}${SERVER_PREFIX}/category?page=${page}&pageSize=-1`,
+      method: GET,
+    })
+      .then((data) => {
+        resolve(data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
 export function callRemoveCategory(id) {
   const token = getCookie("_token");
   return new Promise((resolve, reject) => {

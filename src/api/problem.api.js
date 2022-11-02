@@ -126,6 +126,21 @@ export function callProblemUpdate(id, data) {
   });
 }
 
+export function userGetProblem(page, pageSize, sort) {
+  return new Promise((resolve, reject) => {
+    axios({
+      url: `${SERVER_HOST}${SERVER_PREFIX}/problem?page=${page}&pageSize=${pageSize}&sort=${sort}`,
+      method: GET,
+    })
+      .then((data) => {
+        resolve(data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
 export function callDeteletTestcase(testcases) {
   const token = getCookie("_token");
   return new Promise((resolve, reject) => {

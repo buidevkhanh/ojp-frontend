@@ -117,34 +117,77 @@ export default function NavigationBar() {
           </div>
         </div>
         <div className="container">
-          <div className="row">
+          <div className="row" style={{ height: "70px" }}>
             <div className="col-lg-3 col-md-3">
-              <div className="header__logo">
-                <a href="./index.html">
-                  <img src="img/logo.png" alt="" />
-                </a>
+              <div style={{ lineHeight: "70px", height: "70px" }}>
+                <p
+                  style={{
+                    lineHeight: "70px",
+                    fontSize: "25px",
+                    color: "white",
+                    fontWeight: "bold",
+                  }}
+                >
+                  <span class="text-secondary">Online</span>Judge
+                </p>
               </div>
             </div>
-            <div className="col-lg-9 col-md-9">
+            <div
+              className="col-lg-9 col-md-9"
+              style={{ height: "fit-content" }}
+            >
               <nav className="header__menu">
                 <ul>
                   <li>
-                    <a href="./index.html">Home</a>
+                    <a href="./index.html">
+                      <i class="fa fa-home mx-1" aria-hidden="true"></i>
+                      Home
+                    </a>
                   </li>
                   <li className="active">
-                    <a href="./about.html">Problem</a>
+                    <a href="./about.html">
+                      <i
+                        class="fa fa-list-alt mx-1"
+                        style={{ fontSize: "14px" }}
+                        aria-hidden="true"
+                      ></i>
+                      Problem
+                    </a>
                   </li>
                   <li>
-                    <a href="./hosting.html">Contest</a>
+                    <a href="./hosting.html">
+                      <i
+                        class="fa fa-pencil-square-o mx-1"
+                        aria-hidden="true"
+                      ></i>
+                      Contest
+                    </a>
                   </li>
                   <li>
-                    <a href="./blog.html">History</a>
+                    <a href="./blog.html">
+                      <i class="fa fa-history mx-1" aria-hidden="true"></i>
+                      History
+                    </a>
                   </li>
                   <li>
-                    <a href="./contact.html">Courses</a>
+                    <a href="./contact.html">
+                      <i
+                        class="fa fa-camera-retro mx-1"
+                        style={{ fontSize: "14px" }}
+                        aria-hidden="true"
+                      ></i>
+                      Courses
+                    </a>
                   </li>
                   <li>
-                    <a href="./contact.html">Guide</a>
+                    <a href="./contact.html">
+                      <i
+                        class="fa fa-map-signs mx-1"
+                        style={{ fontSize: "14px" }}
+                        aria-hidden="true"
+                      ></i>
+                      Guide
+                    </a>
                   </li>
                 </ul>
               </nav>
