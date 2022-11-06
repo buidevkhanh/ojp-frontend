@@ -14,6 +14,7 @@ import {
   callUpdateProblem,
 } from "../../../api/problem.api";
 import { AppAction } from "../../../helpers/object.helper";
+import EditorContainer from "../../commons/texteditor";
 
 function AddProblem(props) {
   const problemName = useRef();
@@ -21,7 +22,9 @@ function AddProblem(props) {
   const problemCategory = useRef();
   const problemScope = useRef();
   const [toast, setToast] = useState(<></>);
+  const [initialState, setState] = useState();
   const [categories, setList] = useState([]);
+  const [editorContent, setContent] = useState();
   const [testcases, setTestcase] = useState([]);
   const [removeList, setRemoveList] = useState([]);
   const [addList, setAddList] = useState([]);
@@ -72,7 +75,7 @@ function AddProblem(props) {
             contentBlocks,
             entityMap
           );
-          setEditorState(EditorState.createWithContent(contentState));
+          setState(EditorState.createWithContent(contentState));
         })
         .catch((error) => {
           console.log(error);
@@ -95,12 +98,6 @@ function AddProblem(props) {
         });
     }
   }, []);
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
-  );
-  function onEditorStateChange(state) {
-    setEditorState(state);
-  }
   function addTestCase() {
     if (!inp.current.value && !oup.current.value) {
       setToast(
@@ -142,7 +139,7 @@ function AddProblem(props) {
     const level = problemLevel.current.value;
     const category = problemCategory.current.value;
     const scope = "public";
-    const content = draftToHtml(editorState);
+    const content = editorContent;
     const expectedInput = inpRequire.current.value;
     const expectedOutput = oupRequire.current.value;
     const cases = testcases;
@@ -196,6 +193,9 @@ function AddProblem(props) {
         })
         .catch((error) => {});
     }
+  }
+  function handleChange(text) {
+    setContent(text);
   }
   const renderTestcase = testcases
     ? testcases.map((item, index) => {
@@ -274,11 +274,12 @@ function AddProblem(props) {
                 </div>
                 <div class="form-group">
                   <label for="exampleSelectGender">Input Question</label>
-                  <div class="border" style={{ height: "300px" }}>
-                    <Editor
-                      editorState={editorState}
-                      onEditorStateChange={onEditorStateChange}
-                    ></Editor>
+                  <div>
+                    <EditorContainer
+                      id={props.id}
+                      action={props.action}
+                      handleChange={handleChange}
+                    />
                   </div>
                 </div>
                 <div class="d-flex justify-content-center align-items-center">

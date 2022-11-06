@@ -1,0 +1,44 @@
+.editor {
+    counter-reset: line;
+    width: inherit;
+    border: 1px solid #ced4da;
+}
+
+.editor #codeArea {
+    outline: none;
+    padding-left: 60px !important;
+}
+
+.editor-size {
+    border: none;
+    outline: none;
+    width: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    border: none !important;
+    outline: none !important;
+}
+
+.editor-size:focus-visible {
+    border: none !important;
+    outline: none !important;
+}
+
+.editor pre {
+    padding-left: 60px !important;
+}
+
+.editor .editorLineNumber {
+    position: absolute;
+    left: 0px;
+    color: #cccccc;
+    text-align: right;
+    width: 40px;
+    font-weight: 100;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}

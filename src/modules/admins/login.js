@@ -43,12 +43,22 @@ function AdminLogin() {
         <div class="admin__login__form">
           <div class="t-secondary">Email address</div>
           <div class="input__group">
-            <input ref={username} type="text" />
+            <input
+              style={{ outline: "none !important", border: "none !important" }}
+              ref={username}
+              placeholder="Enter root email"
+              type="text"
+            />
             <i class="fa fa-user-o" aria-hidden="true"></i>
           </div>
           <div class="t-secondary mt-1">Password</div>
           <div class="input__group">
-            <input ref={password} type="password" />
+            <input
+              style={{ outline: "none !important", border: "none !important" }}
+              ref={password}
+              type="password"
+              placeholder="Enter root password"
+            />
             <i class="fa fa-key" aria-hidden="true"></i>
           </div>
           <div class="login__area d-flex mt-3 justify-content-between">

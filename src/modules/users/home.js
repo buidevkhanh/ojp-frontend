@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import { callGetCategory, userGetCategory } from "../../api/category.api";
+import { userGetCategory } from "../../api/category.api";
 import { userGetProblem } from "../../api/problem.api";
 import Footer from "../commons/footer";
 import NavigationBar from "../commons/navigation";

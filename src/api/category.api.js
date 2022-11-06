@@ -47,7 +47,9 @@ export function callGetCategory(page) {
 export function userGetCategory(page) {
   return new Promise((resolve, reject) => {
     axios({
-      url: `${SERVER_HOST}${SERVER_PREFIX}/category?page=${page}&pageSize=-1`,
+      url: `${SERVER_HOST}${SERVER_PREFIX}/category?page=${
+        page || ""
+      }&pageSize=-1`,
       method: GET,
     })
       .then((data) => {

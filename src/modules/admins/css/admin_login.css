@@ -57,9 +57,9 @@
 }
 
 .input__group input {
-    border: none;
+    border: none !important;
     box-sizing: border-box;
-    outline: none;
+    outline: none !important;
     padding-left: 10px;
     width: 90%;
 }

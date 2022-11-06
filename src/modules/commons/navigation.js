@@ -1,4 +1,11 @@
+import { useEffect, useState } from "react";
+
 export default function NavigationBar() {
+  const [currentPath, setPath] = useState("");
+  useEffect(() => {
+    setPath(window.location.pathname.slice(1));
+    console.log(currentPath);
+  }, []);
   function handleCanvasOpen() {
     const canvasBar = document.querySelector(".offcanvas__menu__wrapper");
     const canvasOpenBtn = document.querySelector(".canvas__open");
@@ -34,22 +41,26 @@ export default function NavigationBar() {
         </div>
         <nav className="offcanvas__menu mobile-menu">
           <ul>
-            <li className="active">
+            <li
+              className={
+                currentPath === "" || currentPath === "home" ? "active" : ""
+              }
+            >
               <a href="./index.html">Home</a>
             </li>
-            <li>
+            <li className={currentPath === "problem" ? "active" : ""}>
               <a href="./about.html">Problem</a>
             </li>
-            <li>
+            <li className={currentPath === "contest" ? "active" : ""}>
               <a href="./hosting.html">Contest</a>
             </li>
-            <li>
+            <li className={currentPath === "history" ? "active" : ""}>
               <a href="./blog.html">History</a>
             </li>
-            <li>
+            <li className={currentPath === "course" ? "active" : ""}>
               <a href="./contact.html">Courses</a>
             </li>
-            <li>
+            <li className={currentPath === "guide" ? "active" : ""}>
               <a href="./contact.html">Guide</a>
             </li>
           </ul>
@@ -138,14 +149,20 @@ export default function NavigationBar() {
             >
               <nav className="header__menu">
                 <ul>
-                  <li>
-                    <a href="./index.html">
+                  <li
+                    className={
+                      currentPath === "" || currentPath === "home"
+                        ? "active"
+                        : ""
+                    }
+                  >
+                    <a href="/">
                       <i class="fa fa-home mx-1" aria-hidden="true"></i>
                       Home
                     </a>
                   </li>
-                  <li className="active">
-                    <a href="./about.html">
+                  <li className={currentPath === "problem" ? "active" : ""}>
+                    <a href="/problem">
                       <i
                         class="fa fa-list-alt mx-1"
                         style={{ fontSize: "14px" }}
@@ -154,8 +171,8 @@ export default function NavigationBar() {
                       Problem
                     </a>
                   </li>
-                  <li>
-                    <a href="./hosting.html">
+                  <li className={currentPath === "contest" ? "active" : ""}>
+                    <a href="/contest">
                       <i
                         class="fa fa-pencil-square-o mx-1"
                         aria-hidden="true"
@@ -163,14 +180,14 @@ export default function NavigationBar() {
                       Contest
                     </a>
                   </li>
-                  <li>
-                    <a href="./blog.html">
+                  <li className={currentPath === "history" ? "active" : ""}>
+                    <a href="/history">
                       <i class="fa fa-history mx-1" aria-hidden="true"></i>
                       History
                     </a>
                   </li>
-                  <li>
-                    <a href="./contact.html">
+                  <li className={currentPath === "course" ? "active" : ""}>
+                    <a href="/course">
                       <i
                         class="fa fa-camera-retro mx-1"
                         style={{ fontSize: "14px" }}
@@ -179,8 +196,8 @@ export default function NavigationBar() {
                       Courses
                     </a>
                   </li>
-                  <li>
-                    <a href="./contact.html">
+                  <li className={currentPath === "guide" ? "active" : ""}>
+                    <a href="/guide">
                       <i
                         class="fa fa-map-signs mx-1"
                         style={{ fontSize: "14px" }}

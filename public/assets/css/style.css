@@ -127,6 +127,10 @@ ol {
 	padding: 30px 0px;
 }
 
+.large-text {
+	font-size: 120px !important;
+}
+
 .verify__header {
 	background-color: #120851;
 	color: white !important;
@@ -753,8 +757,25 @@ tr > .no-relates {
 	background: #4c57d6;
 }
 
+input:focus-visible {
+	border: 1px solid black !important;
+	outline: inherit;
+}
+
+.input__form__input {
+	border: 1px solid #aaa;
+	outline: none !important;
+	padding: 5px 10px;
+	width: 100%;
+	font-size: 14px !important;
+}
+
 .hero__slider.owl-carousel .owl-dots button:last-child {
 	margin-right: 0;
+}
+
+.filter {
+	border-radius: 10px;
 }
 
 .hero__item {

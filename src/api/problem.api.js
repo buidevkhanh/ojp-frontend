@@ -126,10 +126,37 @@ export function callProblemUpdate(id, data) {
   });
 }
 
-export function userGetProblem(page, pageSize, sort) {
+export function userGetProblem(
+  page,
+  pageSize,
+  sort,
+  name,
+  code,
+  level,
+  category
+) {
   return new Promise((resolve, reject) => {
     axios({
-      url: `${SERVER_HOST}${SERVER_PREFIX}/problem?page=${page}&pageSize=${pageSize}&sort=${sort}`,
+      url: `${SERVER_HOST}${SERVER_PREFIX}/problem?page=${
+        page || ""
+      }&pageSize=${pageSize || ""}&sort=${sort || ""}&name=${name || ""}&code=${
+        code || ""
+      }&level=${level || ""}&category=${category || ""}`,
+      method: GET,
+    })
+      .then((data) => {
+        resolve(data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
+export function callGetDetail(code) {
+  return new Promise((resolve, reject) => {
+    axios({
+      url: `${SERVER_HOST}${SERVER_PREFIX}/problem/detail?code=${code || ""}`,
       method: GET,
     })
       .then((data) => {
