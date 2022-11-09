@@ -82,9 +82,18 @@ export default function UserProblem() {
       category: categoryId.current.value,
     });
   }
+
   function changePage(delta) {
     setPage(delta);
     callFilter(delta);
+  }
+  function changeFilter() {
+    setFilter({
+      name: name.current.value,
+      code: code.current.value,
+      level: level.current.value,
+      category: categoryId.current.value,
+    });
   }
   function callFilter(delta) {
     userGetProblem(
@@ -165,11 +174,13 @@ export default function UserProblem() {
               <h4>Filter</h4>
               <input
                 ref={name}
+                onChange={() => changeFilter()}
                 class="input__form__input my-1"
                 type="text"
                 placeholder="Problem name ..."
               ></input>
               <input
+                onChange={() => changeFilter()}
                 ref={code}
                 class="input__form__input my-1"
                 type="text"
@@ -177,6 +188,7 @@ export default function UserProblem() {
               ></input>
               <select
                 ref={level}
+                onChange={() => changeFilter()}
                 defaultValue={"-1"}
                 class="input__form__input my-1"
               >
@@ -185,6 +197,7 @@ export default function UserProblem() {
                 <option value="medium">Medium</option>
               </select>
               <select
+                onChange={() => changeFilter()}
                 ref={categoryId}
                 defaultValue={"-1"}
                 class="input__form__input"

@@ -1,16 +1,25 @@
 import { useEffect, useState } from "react";
 import { callGetDetail } from "../../api/problem.api";
+import { getCookie } from "../../helpers/cookie.helper";
 import CodeEditor from "../commons/editor";
 import Footer from "../commons/footer";
 import NavigationBar from "../commons/navigation";
 import { Toaster } from "../commons/toast";
+import UserRunner from "./runner";
+
 
 export default function ProblemDetail() {
   const [problem, setProblem] = useState();
+  const [code, setCode] = useState();
+  const [language, setLanguage] = useState('java');
   const [toast, setToast] = useState(<></>);
+  const [token, setToken] = useState();
+  const [showRun, setShowRun] = useState(false);
+
   useEffect(() => {
     const path = window.location.pathname;
     const code = path.split("/").at(-1);
+    setToken(getCookie('_token'));
     callGetDetail(code)
       .then((data) => {
         setProblem(data.data);
@@ -19,10 +28,12 @@ export default function ProblemDetail() {
         setToast(<Toaster message={"problemNotFound"} type="error" />);
       });
   }, []);
+
   return (
     <>
       {toast}
       <NavigationBar />
+      { showRun ? <UserRunner problem={problem._id} token={token} hideRun={() => setShowRun(false)} code={code} language={language}/> : null}
       <div class="container py-3">
         {!problem ? (
           <div class="text-center py-3">
@@ -79,17 +90,20 @@ export default function ProblemDetail() {
             <div class="row">
               <div class="editor-code">
                 <h4 class="my-4 p-0 mx-0">Online code editor</h4>
+                <p class="m-0 text-danger">{ token ? null : " * To submit code, you need login !"}</p>
                 <div class="action text-end">
-                  <div class="btn btn-success">
+                  <div class="btn btn-success" onClick={() => setShowRun(true)}>
                     {" "}
                     <i class="fa fa-cogs mx-2" aria-hidden="true"></i>Run code
                   </div>
+                  { token ?
                   <div class="btn btn-primary ml-2">
                     {" "}
                     <i class="fa fa-upload mx-2" aria-hidden="true"></i>Submit
                   </div>
+                  : null }
                 </div>
-                <CodeEditor />
+                <CodeEditor changeCode={setCode} changeLanguage={setLanguage} />
               </div>
             </div>
           </div>

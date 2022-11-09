@@ -5,6 +5,7 @@ import UserAuth from "../users/auth";
 import ProblemDetail from "../users/detail";
 import UserHome from "../users/home";
 import UserProblem from "../users/problem";
+import UserSubmission from "../users/submission";
 import { VerifyAccount } from "../users/verify";
 
 export function AppRoutes() {
@@ -30,6 +31,7 @@ export function AppRoutes() {
           path="/problem/detail/*"
           element={<ProblemDetail />}
         ></Route>
+        <Route exact path="/history" element={<UserSubmission/>}></Route>
         <Route path="/*" element={<UserHome />}></Route>
       </Routes>
     </BrowserRouter>
