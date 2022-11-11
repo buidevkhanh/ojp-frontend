@@ -17,9 +17,7 @@ export function Login() {
         .then((data) => {
           setCookie("_token", data.data.accessToken);
           setCookie("_refresh", data.data.refreshToken, 30);
-          setToast(
-            <Toaster message={"Login success, redirect"} type="success" />
-          );
+          window.location.replace(getCookie('_prev'));
         })
         .catch((error) => {
           setToast(

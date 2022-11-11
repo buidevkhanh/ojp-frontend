@@ -113,6 +113,20 @@ export default function UserProblem() {
         setToast(<Toaster message="Unbale to send request" type="error" />);
       });
   }
+  function callNoFilter(delta) {
+    userGetProblem(
+      delta ? delta : page,
+      20,
+      "level:-1"
+    )
+      .then((data) => {
+        setProblem(data.data.data);
+        setTotalPage(data.data.totalPage);
+      })
+      .catch((error) => {
+        setToast(<Toaster message="Unbale to send request" type="error" />);
+      });
+  }
   return (
     <>
       {toast}
@@ -210,7 +224,7 @@ export default function UserProblem() {
               </div>
               <div
                 class="btn btn-danger mx-2 my-1"
-                onClick={() => clearFilter()}
+                onClick={() => {clearFilter(); callNoFilter()}}
               >
                 Clear filter
               </div>

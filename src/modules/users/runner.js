@@ -52,10 +52,10 @@ export default function UserRunner(props) {
               let dataOutput = outputArray.map((item, index) => {
                 return <pre key={index} class="m-0 p-0 text-white">{item}</pre>
               })
-              dataOutput.unshift(<p class="m-0 p-0 text-success">{`Run code success (executeTime: ${Math.ceil(data.time / 10)/100}s)`}</p>)
+              dataOutput.unshift(<p class="m-0 w-100 p-0 text-success">{`Run code success (executeTime: ${Math.ceil(data.time / 10)/100}s)`}</p>)
               setOutput(dataOutput);
             } else if (data.error) {
-              setOutput(<p class="m-0 p-0 text-danger">{`Error: ${data.error} (executeTime: ${Math.ceil(data.time / 10)/100}s)`}</p>)
+              setOutput(<p class="m-0  w-100 p-0 text-danger">{`Error: ${data.error} (executeTime: ${Math.ceil(data.time / 10)/100}s)`}</p>)
             }
             setRunning(false);
             setCompiled('Run this test');

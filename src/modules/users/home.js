@@ -49,7 +49,8 @@ function UserHome() {
                     width: "100%",
                     height: "100%",
                     backgroundImage: `url('${item.categoryLogo}')`,
-                    backgroundSize: "auto",
+                    backgroundSize: `cover`,
+                    backgroundRepeat: `no-repeat`
                   }}
                 ></div>
               </div>

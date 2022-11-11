@@ -1,8 +1,14 @@
 import { useEffect, useState } from "react";
+import { userGetInfor } from "../../api/user.api";
+import { setCookie } from "../../helpers/cookie.helper";
 
 export default function NavigationBar() {
   const [currentPath, setPath] = useState("");
+  const [user, setUser] = useState();
   useEffect(() => {
+    userGetInfor().then((data) => {
+      setUser(data.data);
+    });
     setPath(window.location.pathname.slice(1));
     console.log(currentPath);
   }, []);
@@ -28,6 +34,10 @@ export default function NavigationBar() {
     canvasBar.style.left = "-300px";
     mobileMenuBar.style.display = "none";
   }
+  function handleLogin() {
+    setCookie('_prev', window.location.pathname);
+    window.location.replace("/auths/sign-in");
+  }
   return (
     <>
       <div className="offcanvas__menu__wrapper">
@@ -46,22 +56,22 @@ export default function NavigationBar() {
                 currentPath === "" || currentPath === "home" ? "active" : ""
               }
             >
-              <a href="./index.html">Home</a>
+              <a href="/">Home</a>
             </li>
             <li className={currentPath === "problem" ? "active" : ""}>
-              <a href="./about.html">Problem</a>
+              <a href="/problem">Problem</a>
             </li>
             <li className={currentPath === "contest" ? "active" : ""}>
-              <a href="./hosting.html">Contest</a>
+              <a href="/contest">Contest</a>
             </li>
             <li className={currentPath === "history" ? "active" : ""}>
-              <a href="./blog.html">History</a>
+              <a href="/history">History</a>
             </li>
             <li className={currentPath === "course" ? "active" : ""}>
-              <a href="./contact.html">Courses</a>
+              <a href="/course">Courses</a>
             </li>
             <li className={currentPath === "guide" ? "active" : ""}>
-              <a href="./contact.html">Guide</a>
+              <a href="/guide">Guide</a>
             </li>
           </ul>
         </nav>
@@ -74,9 +84,15 @@ export default function NavigationBar() {
               </a>
             </li>
             <li>
-              <a href="#">
-                <span className="fa fa-user"></span> Login / Register
+              { user ? 
+              <span>
+                <img width={'20px'} height={'20px'} src={user.avatar} alt="user-avatar" style={{borderRadius: '50%'}}></img> {user.displayName}
+              </span> :
+              <a onClick={()=>handleLogin()} class="text-white">
+                <span className="fa fa-user"></span>
+                <span class="cursor">Login / Register</span>
               </a>
+              }
             </li>
           </ul>
         </div>
@@ -117,9 +133,15 @@ export default function NavigationBar() {
                       </a>
                     </li>
                     <li>
-                      <a href="#">
-                        <span className="fa fa-user"></span> Login / Register
+                    { user ? 
+                      <span class="text-white">
+                        <img class="mr-1" width={'26px'} height={'26px'} src={user.avatar} alt="user-avatar" style={{borderRadius: '50%'}}></img> {user.displayName}
+                      </span> :
+                      <a onClick={()=>handleLogin()} class="text-white cursor">
+                        <span className="fa fa-user"></span>
+                        Login / Register
                       </a>
+                      }
                     </li>
                   </ul>
                 </div>

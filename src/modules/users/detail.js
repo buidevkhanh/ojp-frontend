@@ -6,6 +6,11 @@ import Footer from "../commons/footer";
 import NavigationBar from "../commons/navigation";
 import { Toaster } from "../commons/toast";
 import UserRunner from "./runner";
+import io from 'socket.io-client';
+import { SERVER_HOST } from "../../configs/app.config";
+import { AppObject } from "../../configs/app.object";
+
+const socket = io(SERVER_HOST);
 
 
 export default function ProblemDetail() {
@@ -28,6 +33,15 @@ export default function ProblemDetail() {
         setToast(<Toaster message={"problemNotFound"} type="error" />);
       });
   }, []);
+
+  function submitCode() {
+    socket.emit(AppObject.SOCKET_ACTIONS.ACTION_SUBMIT_PROBLEM, {
+      code: code,
+      language: language,
+      token: token,
+      problem: problem
+    });
+  }
 
   return (
     <>
@@ -97,7 +111,7 @@ export default function ProblemDetail() {
                     <i class="fa fa-cogs mx-2" aria-hidden="true"></i>Run code
                   </div>
                   { token ?
-                  <div class="btn btn-primary ml-2">
+                  <div class="btn btn-primary ml-2" onClick={() => submitCode()}>
                     {" "}
                     <i class="fa fa-upload mx-2" aria-hidden="true"></i>Submit
                   </div>
