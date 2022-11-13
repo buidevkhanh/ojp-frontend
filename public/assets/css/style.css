@@ -102,6 +102,12 @@ textarea:focus {
 	outline: none;
 }
 
+.submission__switch > .switch__active {
+	transition: 0.5s;
+	background-color: #34b1aa !important;
+	color: white !important;
+}
+
 a:hover,
 a:focus {
 	text-decoration: none;

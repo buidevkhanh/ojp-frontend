@@ -147,7 +147,7 @@ export default function UserProblem() {
               </thead>
               <tbody>{renderProblem}</tbody>
             </div>
-            {+totalPage >= 1 ? (
+            {+totalPage > 1 ? (
               <nav aria-label="navigation mt-2">
                 <ul class="pagination mt-2 text-center d-flex justify-content-center">
                   {page - 1 > 0 ? (

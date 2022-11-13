@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { callGetDetail } from "../../api/problem.api";
-import { getCookie } from "../../helpers/cookie.helper";
+import { getCookie, setCookie } from "../../helpers/cookie.helper";
 import CodeEditor from "../commons/editor";
 import Footer from "../commons/footer";
 import NavigationBar from "../commons/navigation";
@@ -41,6 +41,7 @@ export default function ProblemDetail() {
       token: token,
       problem: problem
     });
+    window.location.replace("/history?auth=me");
   }
 
   return (

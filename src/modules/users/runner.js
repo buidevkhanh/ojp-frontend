@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from "react"
 import { AppObject } from "../../configs/app.object";
 import { Toaster } from "../commons/toast";
 import io from 'socket.io-client';
-import { SERVER_HOST } from "../../configs/app.config";
+import { SOCKET_HOST } from "../../configs/app.config";
 
-const socket = io(SERVER_HOST);
+const socket = io(SOCKET_HOST);
 
 export default function UserRunner(props) {
     const input = useRef();
@@ -52,10 +52,10 @@ export default function UserRunner(props) {
               let dataOutput = outputArray.map((item, index) => {
                 return <pre key={index} class="m-0 p-0 text-white">{item}</pre>
               })
-              dataOutput.unshift(<p class="m-0 w-100 p-0 text-success">{`Run code success (executeTime: ${Math.ceil(data.time / 10)/100}s)`}</p>)
+              dataOutput.unshift(<p class="m-0 w-100 p-0 text-success">{`Run code success (executeTime: ${data.time}s)`}</p>)
               setOutput(dataOutput);
             } else if (data.error) {
-              setOutput(<p class="m-0  w-100 p-0 text-danger">{`Error: ${data.error} (executeTime: ${Math.ceil(data.time / 10)/100}s)`}</p>)
+              setOutput(<p class="m-0  w-100 p-0 text-danger">{`Error: ${data.error} (executeTime: ${data.time}s)`}</p>)
             }
             setRunning(false);
             setCompiled('Run this test');
