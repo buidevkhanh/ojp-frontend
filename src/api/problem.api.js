@@ -136,6 +136,7 @@ export function userGetProblem(
   category
 ) {
   return new Promise((resolve, reject) => {
+    const token = getCookie('_token');
     axios({
       url: `${SERVER_HOST}${SERVER_PREFIX}/problem?page=${
         page || ""
@@ -143,6 +144,9 @@ export function userGetProblem(
         code || ""
       }&level=${level || ""}&category=${category || ""}`,
       method: GET,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     })
       .then((data) => {
         resolve(data);

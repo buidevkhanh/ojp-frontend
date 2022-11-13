@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import NavigationBar from '../commons/navigation';
 import Footer from '../commons/footer';
 import io from 'socket.io-client';
+import { useSearchParams } from 'react-router-dom';
 import { SOCKET_HOST } from '../../configs/app.config';
 import { AppObject } from '../../configs/app.object';
 import { getSubmission } from '../../api/submission.api';
 import { BarLoader } from 'react-spinners';
+import { userGetInfor } from '../../api/user.api';
 
 const socket = io(SOCKET_HOST);
 
@@ -14,10 +16,18 @@ export default function UserSubmission(props) {
     const [submission, setSubmission] = useState([]);
     const [totalPage, setTotal] = useState(1);
     const [filter, setFilter] = useState(0);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [user, setUser] = useState();
 
     useEffect(() => {   
-        setFilter(window.location.pathname.split("?auth=")[1] == 'me' ? 1 : 0);
-        getSubmission(page, window.location.pathname.split("?auth=")[1] == 'me' ? 'me': null).then((data) => {
+        userGetInfor().then((data) => {
+            setUser(data.data);
+        }).catch(()=>{
+            window.location.replace("/auths/sign-in");
+        })
+        const isAuth = searchParams.get('auth');
+        setFilter(isAuth == 'me' ? 1 : 0);
+        getSubmission(page, isAuth == 'me' ? 'me': null).then((data) => {
             setSubmission(data.data.data);
             setTotal(data.data.totalPage);
         })
@@ -55,6 +65,10 @@ export default function UserSubmission(props) {
         })
     }
 
+    function handleEdit(problem, submission) {
+        window.location.replace(`/problem/detail/${problem}?edit=${submission}`)
+    }
+
     const renderSubmit = submission ? submission.map((item, index) => {
         let bg = "bg-danger text-white";
         if(item.status === 'Accepted') {
@@ -65,6 +79,7 @@ export default function UserSubmission(props) {
         } else if (item.status === 'pending') {
             bg = "bg-white text-dark";
         }
+        console.log(user.displayName, item.user.displayName);
         return (
             <tr key ={index} class="text-center">
                 <td style={{ width: "5%", fontWeight: 'bold' }} class={`flex-column d-flex jutify-content-center align-items-center  w-100 ${bg}`}>
@@ -77,9 +92,12 @@ export default function UserSubmission(props) {
                         /> : 
                     item.status === 'Time Limited Execeeded' ? "TLE" : item.status
                     }
-                    <p class="my-0 mt-2">
-                        <span class={item.status === 'pending' ? "text-dark" : "text-white"}>{ item.status === 'pending' ? 'Running test' : <ins>Edit</ins>}</span>
-                    </p>
+                    {
+                        user ? user.displayName == item.user.displayName ?
+                        <p class="my-0 mt-2" onClick={() => handleEdit(item.problem.problemCode, item._id)}>
+                            <span class={item.status === 'pending' ? "text-dark" : "text-white"}>{ item.status === 'pending' ? 'Running test' : <ins>Edit</ins>}</span>
+                        </p> : null : null
+                    }
                 </td>
                 <td style={{ width: "25%"}}>{item.problem.problemName}</td>
                 <td>{item.user.displayName}</td>

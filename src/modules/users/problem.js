@@ -28,6 +28,7 @@ export default function UserProblem() {
       });
     userGetProblem(page, 20, "level:-1")
       .then((data) => {
+        console.log(data.data);
         setProblem(data.data.data);
         setTotalPage(data.data.totalPage);
       })
@@ -44,7 +45,9 @@ export default function UserProblem() {
             <td style={{ width: "5%" }}>{(index + 1) * page}</td>
             <td>{item.problemName}</td>
             <td style={{ width: "5%" }}>
-              <i class="fa fa-times-circle text-danger" aria-hidden="true"></i>
+              {
+                item.isDone ? <i class="fa fa-check-circle text-success" aria-hidden="true"></i> : <i class="fa fa-times-circle text-danger" aria-hidden="true"></i>
+              }
             </td>
             <td style={{ width: "10%" }}>{item.problemLevel}</td>
             <td style={{ width: "15%" }}>
@@ -54,7 +57,7 @@ export default function UserProblem() {
                   window.location.replace(`/problem/detail/${item.problemCode}`)
                 }
               >
-                Resolve
+                Visit
               </div>
             </td>
           </tr>

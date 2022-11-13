@@ -6,12 +6,24 @@ import "prismjs/components/prism-cpp";
 import "prismjs/components/prism-java";
 import "prismjs/components/prism-javascript";
 import "prismjs/themes/prism.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./assets/editor.css";
 
 export default function CodeEditor(props) {
   const [code, setCode] = useState("");
   const [language, setLanguage] = useState(languages.java);
+  useEffect(()=>{
+    if(props.default) {
+      setCode(props.default);
+    }
+    if(props.defaultLanguage) {
+      if(props.defaultLanguage === 'cpp') {
+        setLanguage(languages.cpp);
+      } else if(props.defaultLanguage === 'java') {
+        setLanguage(languages.java);
+      }
+    }
+  })
   const hightlightWithLineNumbers = (input, language) =>
     highlight(input, language)
       .split("\n")
@@ -43,7 +55,7 @@ export default function CodeEditor(props) {
           <p class="px-2 ps-4 m-0">Set language</p>
           <select
             onChange={(e) =>  handleChange(e)}
-            defaultValue={"java"}
+            defaultValue={props.defaultLanguage || "java"}
             style={{ fontSize: "14px" }}
             class="px-2"
           >

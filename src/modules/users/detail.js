@@ -9,6 +9,8 @@ import UserRunner from "./runner";
 import io from 'socket.io-client';
 import { SERVER_HOST } from "../../configs/app.config";
 import { AppObject } from "../../configs/app.object";
+import { useSearchParams } from "react-router-dom";
+import { callDetailSubmit } from "../../api/submission.api";
 
 const socket = io(SERVER_HOST);
 
@@ -20,18 +22,37 @@ export default function ProblemDetail() {
   const [toast, setToast] = useState(<></>);
   const [token, setToken] = useState();
   const [showRun, setShowRun] = useState(false);
+  const [params, setParams] = useSearchParams();
 
   useEffect(() => {
-    const path = window.location.pathname;
-    const code = path.split("/").at(-1);
-    setToken(getCookie('_token'));
-    callGetDetail(code)
-      .then((data) => {
-        setProblem(data.data);
+    const isEdit = params.get('edit');
+    if(isEdit) {
+      callDetailSubmit(isEdit).then((data) => {
+        setCode(data.data.userCode);  
+        setLanguage(data.data.language || 'cpp');
+        const path = window.location.pathname;
+        const code = path.split("/").at(-1);
+        setToken(getCookie('_token'));
+        callGetDetail(code)
+          .then((data) => {
+            setProblem(data.data);
+          })
+          .catch((error) => {
+            setToast(<Toaster message={"problemNotFound"} type="error" />);
+          });
       })
-      .catch((error) => {
-        setToast(<Toaster message={"problemNotFound"} type="error" />);
-      });
+    } else {
+      const path = window.location.pathname;
+      const code = path.split("/").at(-1);
+      setToken(getCookie('_token'));
+      callGetDetail(code)
+        .then((data) => {
+          setProblem(data.data);
+        })
+        .catch((error) => {
+          setToast(<Toaster message={"problemNotFound"} type="error" />);
+        });
+    }
   }, []);
 
   function submitCode() {
@@ -41,7 +62,7 @@ export default function ProblemDetail() {
       token: token,
       problem: problem
     });
-    window.location.replace("/history?auth=me");
+   window.location.assign("/history?auth=me");
   }
 
   return (
@@ -118,7 +139,7 @@ export default function ProblemDetail() {
                   </div>
                   : null }
                 </div>
-                <CodeEditor changeCode={setCode} changeLanguage={setLanguage} />
+                <CodeEditor default={code} defaultLanguage={language} changeCode={setCode} changeLanguage={setLanguage} />
               </div>
             </div>
           </div>
