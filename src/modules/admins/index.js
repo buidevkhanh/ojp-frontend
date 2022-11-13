@@ -4,6 +4,7 @@ import { AdminScreen } from "../../helpers/object.helper";
 import Category from "./category";
 import Dashboard from "./overview";
 import Problem from "./problems";
+import Submission from "./submission";
 
 function AdminIndex() {
   const [screen, setScreen] = useState(AdminScreen.DASHBOARD);
@@ -21,6 +22,10 @@ function AdminIndex() {
       }
       case AdminScreen.CATEGORY: {
         setFeature(<Category />);
+        break;
+      }
+      case AdminScreen.SUBMISSION: {
+        setFeature(<Submission />);
         break;
       }
       default:
@@ -641,6 +646,14 @@ function AdminIndex() {
                         onClick={() => changeScreen(AdminScreen.CATEGORY)}
                       >
                         Manage categories
+                      </span>
+                    </li>
+                    <li class="nav-item">
+                      <span
+                        class="nav-link"
+                        onClick={() => changeScreen(AdminScreen.SUBMISSION)}
+                      >
+                        Manage submissions
                       </span>
                     </li>
                   </ul>

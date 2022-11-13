@@ -2,6 +2,7 @@ export const AdminScreen = {
   DASHBOARD: "dashboard",
   PROBLEM: "problem",
   CATEGORY: "category",
+  SUBMISSION: "submission"
 };
 
 export const FormType = {
