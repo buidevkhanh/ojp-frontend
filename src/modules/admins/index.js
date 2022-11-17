@@ -2,6 +2,7 @@ import { CategoryScale } from "chart.js";
 import { useState } from "react";
 import { AdminScreen } from "../../helpers/object.helper";
 import Category from "./category";
+import Contest from "./contest";
 import Dashboard from "./overview";
 import Problem from "./problems";
 import Submission from "./submission";
@@ -11,6 +12,7 @@ function AdminIndex() {
   const [Feature, setFeature] = useState(<Dashboard />);
   function changeScreen(newScreen) {
     setScreen(newScreen);
+    console.log(newScreen);
     switch (newScreen) {
       case AdminScreen.DASHBOARD: {
         setFeature(<Dashboard />);
@@ -26,6 +28,11 @@ function AdminIndex() {
       }
       case AdminScreen.SUBMISSION: {
         setFeature(<Submission />);
+        break;
+      }
+      case AdminScreen.CONTEST: {
+        console.log('contest');
+        setFeature(<Contest />);
         break;
       }
       default:
@@ -673,16 +680,10 @@ function AdminIndex() {
                 </a>
                 <div class="collapse" id="charts">
                   <ul class="nav flex-column sub-menu">
-                    <li class="nav-item">
+                    <li class="nav-item" onClick={() => {changeScreen(AdminScreen.CONTEST)}}>
                       {" "}
-                      <a class="nav-link" href="pages/charts/chartjs.html">
+                      <a class="nav-link">
                         Manage contests
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      {" "}
-                      <a class="nav-link" href="pages/charts/chartjs.html">
-                        Current contests
                       </a>
                     </li>
                   </ul>

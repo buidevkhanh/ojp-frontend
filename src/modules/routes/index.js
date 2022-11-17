@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AdminIndex from "../admins";
 import AdminLogin from "../admins/login";
 import UserAuth from "../users/auth";
+import UserContest from "../users/contest";
 import ProblemDetail from "../users/detail";
 import UserHome from "../users/home";
 import UserProblem from "../users/problem";
@@ -32,6 +33,7 @@ export function AppRoutes() {
           element={<ProblemDetail />}
         ></Route>
         <Route exact path="/history" element={<UserSubmission/>}></Route>
+        <Route exact path="/contest" element={<UserContest/>}></Route>
         <Route path="/*" element={<UserHome />}></Route>
       </Routes>
     </BrowserRouter>

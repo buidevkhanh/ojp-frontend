@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { FormType } from "../../helpers/object.helper";
 import AddProblem from "./forms/addProblem";
 import CategoryForm from "./forms/category-form";
+import ContestForm from "./forms/contest-form";
 import ProblemDetail from "./forms/problem-detail";
 
 function Form(props) {
@@ -39,6 +40,17 @@ function Form(props) {
         setForm(
           <ProblemDetail info={props.info} closeForm={props.closeForm} />
         );
+        break;
+      }
+      case FormType.CONTEST: {
+        setForm(
+          <ContestForm 
+          title={"Create contest"}
+            description={
+              "Create new contest, becareful if create many contest, your systems can be crash"
+            }
+          closeForm={props.closeForm} />
+        )
         break;
       }
       default:

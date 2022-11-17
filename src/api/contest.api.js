@@ -9,15 +9,16 @@ import {
 } from "../configs/app.config";
 import { getCookie } from "../helpers/cookie.helper";
 
-export function callGetProblem(page, name) {
+export function callCreateContest(params) {
   const token = getCookie("_token");
   return new Promise((resolve, reject) => {
     axios({
-      url: `${SERVER_HOST}${SERVER_PREFIX}/admin/problem?page=${page}&pageSize=-1&name=${name || null}`,
-      method: GET,
+      url: `${SERVER_HOST}${SERVER_PREFIX}/admin/contest`,
+      method: POST,
       headers: {
         Authorization: `Bearer ${token}`,
       },
+      data: params,
     })
       .then((data) => {
         resolve(data);
@@ -28,16 +29,15 @@ export function callGetProblem(page, name) {
   });
 }
 
-export function callCreateProblem(params) {
+export function callGetContest() {
   const token = getCookie("_token");
   return new Promise((resolve, reject) => {
     axios({
-      url: `${SERVER_HOST}${SERVER_PREFIX}/admin/problem`,
-      method: POST,
+      url: `${SERVER_HOST}${SERVER_PREFIX}/admin/contest?page=1&pageSize=-1`,
+      method: GET,
       headers: {
         Authorization: `Bearer ${token}`,
-      },
-      data: params,
+      }
     })
       .then((data) => {
         resolve(data);

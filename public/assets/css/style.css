@@ -124,6 +124,53 @@ ol {
 /*---------------------
   Helper CSS
 -----------------------*/
+.custom__input__1 {
+	border: 1px solid #ced4da;
+	font-size: 14px !important;
+	display: block;
+	padding: 5px 10px;
+	border-radius: 4px;
+	outline: none;
+}
+
+.dynamic__result {
+	max-height: 210px !important;
+	overflow-y: scroll;
+}
+
+.search__item {
+	padding: 5px;
+	line-height: 25px !important;
+}
+
+.search__item:hover {
+	background-color: #ced4da;
+	transition: .5s;
+}
+
+.custom__textarea__1{
+	background-color: white;
+	border: 1px solid #ced4da;
+	font-size: 13px;
+}
+
+.custom__select__1{
+	background-color: white;
+	border: 1px solid #ced4da;
+	border-top: 0px solid rgba(0,0,0,0);
+	font-size: 13px;
+}
+
+.custom__select__2{
+	background-color: white;
+	border: 1px solid #ced4da;
+	font-size: 13px;
+}
+
+::-webkit-input-placeholder {
+	color: #ced4da;
+}
+
 .site__logo {
 	font-size: 25px !important;
 	font-weight: bold;
