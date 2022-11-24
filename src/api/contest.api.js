@@ -48,6 +48,40 @@ export function callGetContest() {
   });
 }
 
+export function userGetContest() {
+  return new Promise((resolve, reject) => {
+    axios({
+      url: `${SERVER_HOST}${SERVER_PREFIX}/contest?page=1&pageSize=-1`,
+      method: GET,
+    })
+      .then((data) => {
+        resolve(data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
+export function userGetOwn(time) {
+  const token = getCookie("_token");
+  return new Promise((resolve, reject) => {
+    axios({
+      url: `${SERVER_HOST}${SERVER_PREFIX}/contest/own?page=1&pageSize=-1&time=${time || null}`,
+      method: GET,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+      .then((data) => {
+        resolve(data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
 export function callChangeStatus(id) {
   const token = getCookie("_token");
   return new Promise((resolve, reject) => {
@@ -77,6 +111,25 @@ export function callUpdateProblem(id, data) {
         Authorization: `Bearer ${token}`,
       },
       data,
+    })
+      .then((data) => {
+        resolve(data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
+export function callRegister(id) {
+  const token = getCookie("_token");
+  return new Promise((resolve, reject) => {
+    axios({
+      url: `${SERVER_HOST}${SERVER_PREFIX}/contest/register/${id}`,
+      method: POST,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
     })
       .then((data) => {
         resolve(data);

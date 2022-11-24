@@ -138,6 +138,10 @@ ol {
 	overflow-y: scroll;
 }
 
+.bg-linear-main {
+	background-image: linear-gradient(to bottom right, #1a1c72, #4682b4);
+}
+
 .search__item {
 	padding: 5px;
 	line-height: 25px !important;
