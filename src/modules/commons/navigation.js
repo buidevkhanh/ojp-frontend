@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { userGetInfor } from "../../api/user.api";
 import { setCookie } from "../../helpers/cookie.helper";
 
-export default function NavigationBar() {
+export default function NavigationBar(props) {
   const [currentPath, setPath] = useState("");
   const [user, setUser] = useState();
   useEffect(() => {
@@ -49,6 +49,7 @@ export default function NavigationBar() {
             <img src="img/logo.png" alt="" />
           </a>
         </div>
+        { props.scope !== 'limited' ?
         <nav className="offcanvas__menu mobile-menu">
           <ul>
             <li
@@ -74,7 +75,8 @@ export default function NavigationBar() {
               <a href="/guide">Guide</a>
             </li>
           </ul>
-        </nav>
+        </nav> : null 
+        }
         <div id="mobile-menu-wrap"></div>
         <div className="offcanvas__auth">
           <ul>
@@ -151,6 +153,7 @@ export default function NavigationBar() {
         </div>
         <div className="container">
           <div className="row" style={{ height: "70px" }}>
+            { props.scope !== 'limited' ?
             <div className="col-lg-3 col-md-3">
               <div style={{ lineHeight: "70px", height: "70px" }}>
                 <p
@@ -164,11 +167,27 @@ export default function NavigationBar() {
                   <span class="text-secondary">Online</span>Judge
                 </p>
               </div>
+            </div> :
+            <div className="col-lg-12 col-md-12 text-center">
+              <div style={{ lineHeight: "70px", height: "70px" }}>
+                <p
+                  style={{
+                    lineHeight: "70px",
+                    fontSize: "25px",
+                    color: "white",
+                    fontWeight: "bold",
+                  }}
+                >
+                  OnlineJudge Contest
+                </p>
+              </div>
             </div>
+            } 
             <div
               className="col-lg-9 col-md-9"
               style={{ height: "fit-content" }}
             >
+              { props.scope !== 'limited' ?
               <nav className="header__menu">
                 <ul>
                   <li
@@ -229,7 +248,7 @@ export default function NavigationBar() {
                     </a>
                   </li>
                 </ul>
-              </nav>
+              </nav> : null }
             </div>
           </div>
           <div className="canvas__open" onClick={() => handleCanvasOpen()}>

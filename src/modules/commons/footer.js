@@ -1,5 +1,7 @@
-export default function Footer() {
+export default function Footer(props) {
   return (
+    <>
+    {props.scope !== 'limited' ?
     <footer class="footer-section" style={{ height: "fit-content" }}>
       <div class="footer__top">
         <div class="container">
@@ -23,7 +25,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
-      </div>
+      </div> 
       <div
         class="footer__text set-bg"
         style={{ backgroundImage: "url('/assets/img/footer-bg.png')" }}
@@ -58,7 +60,7 @@ export default function Footer() {
                     <i class="fa fa-instagram"></i>
                   </a>
                 </div>
-              </div>
+              </div> 
             </div>
             <div class="col-lg-2 col-md-6 col-sm-6">
               <div class="footer__text-widget">
@@ -126,8 +128,9 @@ export default function Footer() {
               </a>
             </a>
           </div>
-        </div>
+        </div> 
       </div>
-    </footer>
+    </footer> : null }
+    </>
   );
 }

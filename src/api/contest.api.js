@@ -82,6 +82,25 @@ export function userGetOwn(time) {
   });
 }
 
+export function userGetDetailContest(id) {
+  const token = getCookie("_token");
+  return new Promise((resolve, reject) => {
+    axios({
+      url: `${SERVER_HOST}${SERVER_PREFIX}/contest/${id}`,
+      method: GET,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+      .then((data) => {
+        resolve(data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
 export function callChangeStatus(id) {
   const token = getCookie("_token");
   return new Promise((resolve, reject) => {

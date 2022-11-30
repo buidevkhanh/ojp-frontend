@@ -54,6 +54,9 @@ export default function UserContest() {
                     <div>
                         <i class="fa fa-users mx-1 text-secondary" aria-hidden="true"></i>Remain: {item.remainMember}
                     </div>
+                    <div>
+                        Description: {item.description}
+                    </div>
                 </div>
                 <div>
                     {calcStt(item.beginAt, item.duration)}
@@ -82,19 +85,16 @@ export default function UserContest() {
                     <div>
                         <i class="fa fa-users mx-1 text-secondary" aria-hidden="true"></i>Remain: {item.remainMember}
                     </div>
+                    <div>
+                        Description: {item.description}
+                    </div>
                 </div>
                 <div>
                     {calcStt(item.beginAt, item.duration)}
                 </div>
-                { item.remainMember == 0 ?
-                <div class="btn btn-secondary">
-                    Register 
+                <div class="btn btn-primary">
+                    View result
                 </div>
-                :
-                <div class="btn btn-primary" onClick={() => userRegister(item._id)}>
-                    Register 
-                </div>
-                }
             </li>
         )
     }) : null;
@@ -110,6 +110,9 @@ export default function UserContest() {
                     <div>
                         <i class="fa fa-users mx-1 text-secondary" aria-hidden="true"></i>Remain: {item.remainMember}
                     </div>
+                    <div>
+                        Description: {item.description}
+                    </div>
                 </div>
                 <div>
                     {calcStt(item.beginAt, item.duration)}
@@ -119,7 +122,7 @@ export default function UserContest() {
                     <div class="btn btn-secondary w-50">
                         Waiting 
                     </div>  : 
-                    <div class="btn btn-success w-50">
+                    <div class="btn btn-success w-50" onClick={() => window.location.replace(`/start/contest/${item._id}`)}>
                         Join 
                     </div>
                     }  
