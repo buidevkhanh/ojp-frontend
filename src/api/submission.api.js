@@ -41,7 +41,7 @@ export function callDetailSubmit(submission) {
 }
 
 export function adminGetSubmit() {
-  const token = getCookie("_token");
+  const token = getCookie("__token");
   return new Promise((resolve, reject) => {
     axios({
       url: `${SERVER_HOST}${SERVER_PREFIX}/admin/submission`,
@@ -60,7 +60,7 @@ export function adminGetSubmit() {
 }
 
 export function adminRemoveSubmit(id) {
-  const token = getCookie("_token");
+  const token = getCookie("__token");
   return new Promise((resolve, reject) => {
     axios({
       url: `${SERVER_HOST}${SERVER_PREFIX}/admin/${id}/submission`,

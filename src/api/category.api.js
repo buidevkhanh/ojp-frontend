@@ -26,7 +26,7 @@ export function callCreateCategory(params) {
 }
 
 export function callGetCategory(page) {
-  const token = getCookie("_token");
+  const token = getCookie("__token");
   return new Promise((resolve, reject) => {
     axios({
       url: `${SERVER_HOST}${SERVER_PREFIX}/admin/category?page=${page}&pageSize=20`,
@@ -62,7 +62,7 @@ export function userGetCategory(page) {
 }
 
 export function callRemoveCategory(id) {
-  const token = getCookie("_token");
+  const token = getCookie("__token");
   return new Promise((resolve, reject) => {
     axios({
       url: `${SERVER_HOST}${SERVER_PREFIX}/admin/category/${id}`,
@@ -81,7 +81,7 @@ export function callRemoveCategory(id) {
 }
 
 export function callCategoryDetail(id) {
-  const token = getCookie("_token");
+  const token = getCookie("__token");
   return new Promise((resolve, reject) => {
     axios({
       url: `${SERVER_HOST}${SERVER_PREFIX}/admin/category/${id}`,
@@ -100,7 +100,7 @@ export function callCategoryDetail(id) {
 }
 
 export function callUpdateCategory(categoryId, categoryLogo, categoryName) {
-  const token = getCookie("_token");
+  const token = getCookie("__token");
   return new Promise((resolve, reject) => {
     const data = {
       categoryId,
@@ -127,7 +127,7 @@ export function callUpdateCategory(categoryId, categoryLogo, categoryName) {
 }
 
 export function callChangeCategory(id) {
-  const token = getCookie("_token");
+  const token = getCookie("__token");
   return new Promise((resolve, reject) => {
     axios({
       url: `${SERVER_HOST}${SERVER_PREFIX}/admin/category/${id}/status`,
@@ -146,7 +146,7 @@ export function callChangeCategory(id) {
 }
 
 export function callGetAllCategory(filter) {
-  const token = getCookie("_token");
+  const token = getCookie("__token");
   return new Promise((resolve, reject) => {
     axios({
       url: `${SERVER_HOST}${SERVER_PREFIX}/admin/category?pageSize=-1&${filter}`,

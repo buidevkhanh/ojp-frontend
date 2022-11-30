@@ -10,7 +10,7 @@ import {
 import { getCookie } from "../helpers/cookie.helper";
 
 export function callGetProblem(page, name) {
-  const token = getCookie("_token");
+  const token = getCookie("__token");
   return new Promise((resolve, reject) => {
     axios({
       url: `${SERVER_HOST}${SERVER_PREFIX}/admin/problem?page=${page}&pageSize=-1&name=${name || null}`,
@@ -29,7 +29,7 @@ export function callGetProblem(page, name) {
 }
 
 export function callCreateProblem(params) {
-  const token = getCookie("_token");
+  const token = getCookie("__token");
   return new Promise((resolve, reject) => {
     axios({
       url: `${SERVER_HOST}${SERVER_PREFIX}/admin/problem`,
@@ -49,7 +49,7 @@ export function callCreateProblem(params) {
 }
 
 export function callChangeStatus(id) {
-  const token = getCookie("_token");
+  const token = getCookie("__token");
   return new Promise((resolve, reject) => {
     axios({
       url: `${SERVER_HOST}${SERVER_PREFIX}/admin/problem/${id}/status`,
@@ -68,7 +68,7 @@ export function callChangeStatus(id) {
 }
 
 export function callUpdateProblem(id, data) {
-  const token = getCookie("_token");
+  const token = getCookie("__token");
   return new Promise((resolve, reject) => {
     axios({
       url: `${SERVER_HOST}${SERVER_PREFIX}/admin/problem/${id}`,
@@ -88,7 +88,7 @@ export function callUpdateProblem(id, data) {
 }
 
 export function callProblemDetail(id) {
-  const token = getCookie("_token");
+  const token = getCookie("__token");
   return new Promise((resolve, reject) => {
     axios({
       url: `${SERVER_HOST}${SERVER_PREFIX}/admin/problem/${id}`,
@@ -107,7 +107,7 @@ export function callProblemDetail(id) {
 }
 
 export function callProblemUpdate(id, data) {
-  const token = getCookie("_token");
+  const token = getCookie("__token");
   return new Promise((resolve, reject) => {
     axios({
       url: `${SERVER_HOST}${SERVER_PREFIX}/admin/problem/${id}`,
@@ -173,7 +173,7 @@ export function callGetDetail(code) {
 }
 
 export function callDeteletTestcase(testcases) {
-  const token = getCookie("_token");
+  const token = getCookie("__token");
   return new Promise((resolve, reject) => {
     axios({
       url: `${SERVER_HOST}${SERVER_PREFIX}/admin/problem/testcase`,
@@ -195,7 +195,7 @@ export function callDeteletTestcase(testcases) {
 }
 
 export function callAddTestcase(problemId, testcases) {
-  const token = getCookie("_token");
+  const token = getCookie("__token");
   return new Promise((resolve, reject) => {
     axios({
       url: `${SERVER_HOST}${SERVER_PREFIX}/admin/problem/testcase/${problemId}`,

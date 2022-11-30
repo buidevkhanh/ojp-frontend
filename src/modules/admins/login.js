@@ -17,7 +17,7 @@ function AdminLogin() {
       .then((data) => {
         let isSave;
         if (remem.checked) isSave = 30;
-        setCookie("_token", data.data.token, isSave);
+        setCookie("__token", data.data.token, isSave);
         setToast(<Toaster message="Login success" type="success" />);
       })
       .catch((error) => {
