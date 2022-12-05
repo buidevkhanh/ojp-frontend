@@ -4,6 +4,9 @@ export const AppObject = {
         ACTION_RUNCODE: 'runcode',
         RESPONSE_RUNCODE: 'response_runcode',
         OUTPUT_RUNCODE: 'ouput_runcode',
-        HOOK_SUBMISSION: 'hook_submission'
+        HOOK_SUBMISSION: 'hook_submission',
+        SUBMIT_CONTEST: 'submit_contest',
+        HAS_UPDATE: 'has_update',
+        JOIN_CONTEST: 'join_contest',
     }
 }

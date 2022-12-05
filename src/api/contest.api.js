@@ -287,3 +287,20 @@ export function callAddTestcase(problemId, testcases) {
       });
   });
 }
+
+export function userGetContestHistory(contestId){
+  const token = getCookie('_token');
+  return new Promise((resolve, reject) => {
+    axios({
+      url: `${SERVER_HOST}${SERVER_PREFIX}/contest/${contestId}/history`,
+      method: GET,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then((data) => {
+      resolve(data);
+    }).catch((error) => {
+      reject(error);
+    })
+  });
+}

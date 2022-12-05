@@ -92,7 +92,7 @@ export default function UserContest() {
                 <div>
                     {calcStt(item.beginAt, item.duration)}
                 </div>
-                <div class="btn btn-primary">
+                <div class="btn btn-primary" onClick={() => window.location.replace(`/start/contest/${item._id}`)}>
                     View result
                 </div>
             </li>

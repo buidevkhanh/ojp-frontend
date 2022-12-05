@@ -1,15 +1,12 @@
 import { useEffect, useState } from 'react';
 import NavigationBar from '../commons/navigation';
 import Footer from '../commons/footer';
-import io from 'socket.io-client';
+import socket from '../../helpers/sockets/index';
 import { useSearchParams } from 'react-router-dom';
-import { SOCKET_HOST } from '../../configs/app.config';
 import { AppObject } from '../../configs/app.object';
 import { getSubmission } from '../../api/submission.api';
 import { BarLoader } from 'react-spinners';
 import { userGetInfor } from '../../api/user.api';
-
-const socket = io(SOCKET_HOST);
 
 export default function UserSubmission(props) {
     const [page, setPage] = useState(1);
@@ -79,7 +76,6 @@ export default function UserSubmission(props) {
         } else if (item.status === 'pending') {
             bg = "bg-white text-dark";
         }
-        console.log(user.displayName, item.user.displayName);
         return (
             <tr key ={index} class="text-center">
                 <td style={{ width: "5%", fontWeight: 'bold' }} class={`flex-column d-flex jutify-content-center align-items-center  w-100 ${bg}`}>

@@ -6,13 +6,10 @@ import Footer from "../commons/footer";
 import NavigationBar from "../commons/navigation";
 import { Toaster } from "../commons/toast";
 import UserRunner from "./runner";
-import io from 'socket.io-client';
-import { SERVER_HOST } from "../../configs/app.config";
+import socket from "../../helpers/sockets/index";
 import { AppObject } from "../../configs/app.object";
 import { useSearchParams } from "react-router-dom";
 import { callDetailSubmit } from "../../api/submission.api";
-
-const socket = io(SERVER_HOST);
 
 
 export default function ProblemDetail() {
