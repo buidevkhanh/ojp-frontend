@@ -1,17 +1,21 @@
 import { useEffect, useState } from "react";
-import { userGetContestHistory, userGetDetailContest } from "../../api/contest.api";
+import { userGetContestHistory, userGetDetailContest, userGetScore } from "../../api/contest.api";
 import Footer from "../commons/footer";
 import NavigationBar from "../commons/navigation";
 import socket from '../../helpers/sockets/index';
 import { getCookie } from '../../helpers/cookie.helper';
 import { AppObject } from "../../configs/app.object";
 import { Toaster } from '../commons/toast';
+import { confirmAlert } from "react-confirm-alert"; 
+import "react-confirm-alert/src/react-confirm-alert.css";
 
 export default function ContestOrganize() {
     const [detail, setDetail] = useState();
     const [show, setShow] = useState([]);
     const [isDone, setDone] = useState(false);
     const [point, setPoint] = useState([]);
+    const [time, setTime] = useState('');
+    const [score, setScore] = useState(0);
     const [files, setFiles] = useState([]);
     const [toast, setToast] = useState(<></>);
     const [history, setHistory] = useState([]);
@@ -30,7 +34,6 @@ export default function ContestOrganize() {
             for(let i = 0; i < data.data.questions.length; i++) {
                 newFiles.push(null);
             }
-            const questions = data.data.questions;
             setFiles(newFiles);
             const initShow = [];
             for(let i = 0; i < data.data.questions.length; i++) {
@@ -47,25 +50,32 @@ export default function ContestOrganize() {
                 const histories = data.data.history;
                 if(data.data.status === 'done') {
                     setDone(true);
+                    userGetScore(contestId).then((data) => {
+                        setTime(data.data.time);
+                        setScore(data.data.score);
+                    })
                 }
                 const status = data.data.status;
                 if(status === 'done') {
                     setDone(true);
                 }
-                for(let i = 0; i < histories.length; i++) {
-                    const indexFound = history.findIndex((item) => {
-                        return item.problem === histories[i].problem;
-                    })
-                    if(indexFound > -1) {
-                        history[indexFound].history.push(histories[i]);
-                        if(histories[i].status === 'Accepted' && point[indexFound] === 0) {
-                            point[indexFound].push(questions[i].point);
+                const newHistory = structuredClone(history);
+                for(let i = 0; i < newHistory.length; i++) {
+                    newHistory[i].history = [];
+                }
+                userGetContestHistory(contestId).then((data) => {
+                    const histories = data.data.history;
+
+                    for(let i = 0; i < histories.length; i++) {
+                        const indexFound = newHistory.findIndex((item) => {
+                            return item.problem === histories[i].problem;
+                        })
+                        if(indexFound > -1) {
+                            newHistory[indexFound].history.push(histories[i]);
                         }
                     }
-                }
-                console.log(point);
-                setPoint([...point]);
-                setHistory([...history]);
+                    setHistory([...newHistory]);
+                })
             })
         })
     },[])
@@ -148,9 +158,24 @@ export default function ContestOrganize() {
     }
 
     function finishContest() {
-        socket.emit('finish', {
-            token: token,
-            contest: detail._id
+        confirmAlert({
+            title: "Finish this contest",
+            message: "Are you sure to do this ! This action can't be undo",
+            buttons: [
+              {
+                label: "Yes",
+                onClick: () => {
+                    socket.emit('finish', {
+                        token: token,
+                        contest: detail._id
+                    });
+                    window.location.reload();
+                },
+              },
+              {
+                label: "No",
+              },
+            ],
         });
     }
 
@@ -245,16 +270,23 @@ export default function ContestOrganize() {
             <div class="container position-relative">
                 <div class="container shadow my-2 mt-5 p-3">
                     <div class="point-info text-left">
-                        <h5>Total point: {}</h5>
+                        { isDone ? <h5>Total point: <span class="text-danger">{score}</span></h5> : null }
+                        { isDone ? <p class="text-success">Time: {time}</p> : null}
                     </div>
                     <div class="contest-info w-100 text-center" style={{lineHeight: '25px', fontWeight: 'bold'}}>
                         <h3 class="text-secondary">{detail?.name || 'No contest name found'}</h3>
                     </div>
                     {questionDetail}
                 </div>
+                { !isDone ?
                 <div class="w-50 text-center m-auto">
                     <div class="my-2 btn btn-danger w-25" onClick={() => finishContest()}>Finish</div>
+                    <div class="my-2 btn btn-success w-25" onClick={() => window.location.replace('/home')}>Go home</div>
+                </div> :
+                <div class="w-50 text-center m-auto">
+                    <div class="my-2 btn btn-success w-25" onClick={() => window.location.replace('/home')}>Go home</div>
                 </div>
+                } 
             </div>
             <Footer scope="limited"/>
         </>

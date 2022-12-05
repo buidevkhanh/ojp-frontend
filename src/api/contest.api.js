@@ -304,3 +304,20 @@ export function userGetContestHistory(contestId){
     })
   });
 }
+
+export function userGetScore(contestId) {
+  const token = getCookie('_token');
+  return new Promise((resolve, reject) => {
+    axios({
+      url: `${SERVER_HOST}${SERVER_PREFIX}/contest/${contestId}/score`,
+      method: GET,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then((data) => {
+      resolve(data);
+    }).catch((error) => {
+      reject(error);
+    })
+  });
+}
