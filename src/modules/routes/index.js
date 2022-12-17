@@ -7,6 +7,7 @@ import ContestOrganize from "../users/contest-organize";
 import ProblemDetail from "../users/detail";
 import UserHome from "../users/home";
 import UserProblem from "../users/problem";
+import Profile from "../users/profile";
 import UserSubmission from "../users/submission";
 import { VerifyAccount } from "../users/verify";
 
@@ -36,6 +37,7 @@ export function AppRoutes() {
         <Route exact path="/history" element={<UserSubmission/>}></Route>
         <Route exact path="/contest" element={<UserContest/>}></Route>
         <Route exact path="/start/contest/:id" element={<ContestOrganize/>}></Route>
+        <Route exact path="/profile" element={<Profile/>}></Route>
         <Route path="/*" element={<UserHome />}></Route>
       </Routes>
     </BrowserRouter>

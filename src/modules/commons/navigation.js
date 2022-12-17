@@ -8,6 +8,7 @@ export default function NavigationBar(props) {
   useEffect(() => {
     userGetInfor().then((data) => {
       setUser(data.data);
+      props?.setUser(data.data);
     });
     setPath(window.location.pathname.slice(1));
     console.log(currentPath);

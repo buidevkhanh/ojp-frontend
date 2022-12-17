@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { userGetCategory } from "../../api/category.api";
 import { userGetProblem } from "../../api/problem.api";
+import { getTopTen } from "../../api/user.api";
 import Footer from "../commons/footer";
 import NavigationBar from "../commons/navigation";
 import Activities from "./activity";
@@ -8,6 +9,7 @@ import Activities from "./activity";
 function UserHome() {
   const [categoryList, setCategoryList] = useState([]);
   const [problemList, setProblemList] = useState([]);
+  const [ranking, setRanking] = useState([]);
   useEffect(() => {
     userGetCategory().then((data) => {
       setCategoryList(data.data.data);
@@ -15,7 +17,30 @@ function UserHome() {
     userGetProblem(1, 3, "createdAt:-1").then((data) => {
       setProblemList(data.data.data);
     });
+    getTopTen().then(data => {
+      console.log(data.data);
+      setRanking(data.data);
+    })
   }, []);
+
+  const renderRanking = ranking ? ranking.map((item, index) => {
+      return (
+        <tr key={index} class="text-center">
+            <td style={{width: '10%', fontSize: '22px', fontWeight: 'bold'}}>
+              {index + 1}
+            </td>
+            <td>
+              {item.name}
+            </td>
+            <td style={{width: '10%'}}>
+              {item.score}
+            </td>
+            <td style={{width: '10%'}}>
+              {item.passProblem}
+            </td>
+        </tr>
+      )
+  }) : null;
 
   const renderCategory = categoryList
     ? categoryList.map((item, index) => {
@@ -184,6 +209,36 @@ function UserHome() {
           {renderProblemList}
         </ul>
         <p class="text-primary text-end cursor">View all &gt;&gt;</p>
+        <div class="row">
+          <div class="col-12 col-lg-6">
+            <h3 class="bold mt-4 text-secondary" style={{ fontWeight: "bold" }}>
+              Best achievements
+            </h3>
+            <table class="table table-bordered mt-4">
+              <thead>
+                <tr class="text-center">
+                  <th style={{width: '10%'}}>
+                    Rank
+                  </th>
+                  <th>
+                    User
+                  </th>
+                  <th style={{width: '10%'}}>
+                    Score
+                  </th>
+                  <th style={{width: '10%'}}>
+                    Accepted
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+              {renderRanking}
+              </tbody>
+            </table>
+          </div>
+          <div class="col-lg-6 col-sm-12 col-12">
+          </div>
+        </div>
         <h3 class="bold mt-4 text-secondary" style={{ fontWeight: "bold" }}>
           Activities
         </h3>

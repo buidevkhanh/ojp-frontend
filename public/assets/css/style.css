@@ -89,6 +89,30 @@ img {
 	max-width: 100%;
 }
 
+.reply:hover > *{
+	color: #34b1aa !important;
+	transition: .5s;
+}
+
+.custome-input-3 {
+	border: none;
+	outline: none;
+}
+
+.custome-input-3:focus-visible {
+	border: none !important;
+	outline: none !important;
+}
+
+.custome-area-2 {
+	padding: 10px;
+	font-size: 12px !important;
+	height: 37px;
+	overflow-y: hidden;
+	border-radius: 5px;
+	border: 1px solid #e3e3e3;
+}
+
 .toast-font {
 	font-family: 'Varela Round' !important;
 	font-weight: bolder;
