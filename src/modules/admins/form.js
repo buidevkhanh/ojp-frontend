@@ -16,9 +16,9 @@ function Form(props) {
             closeForm={props.closeForm}
             action={props.action}
             id={props.id}
-            title={"Add Problem"}
+            title={"Thêm bài toán"}
             description={
-              "Problems in this page is execise that user can resolve it with their way by their code"
+              "Bài toán là vấn đề đặt ra cần được giải quyết bằng việc lập trình"
             }
           />
         );
@@ -30,8 +30,8 @@ function Form(props) {
             id={props.id}
             action={props.action}
             closeForm={props.closeForm}
-            title={"Manage categories"}
-            description={"Category to group a set of problems with same types"}
+            title={"Quản lý danh mục"}
+            description={"Danh mục dùng để nhóm những tập hợp bài toán có cùng thể loại"}
           ></CategoryForm>
         );
         break;
@@ -45,9 +45,9 @@ function Form(props) {
       case FormType.CONTEST: {
         setForm(
           <ContestForm 
-          title={"Create contest"}
+          title={"Tạo bài thi"}
             description={
-              "Create new contest, becareful if create many contest, your systems can be crash"
+              "Tạo mới bài thi. Để nhiều người cùng tham gia giải quyết cùng những bài toán cụ thể"
             }
           closeForm={props.closeForm} />
         )

@@ -53,7 +53,7 @@ export function VerifyAccount() {
             type="error"
           />
         );
-        window.location.replace("/auths/sign-in");
+        window.location.replace("/sign-in");
       })
       .catch((error) => {
         setToast(
@@ -97,7 +97,7 @@ export function VerifyAccount() {
       <div className="container">
         <div className="site__logo">Online Judge System OJS</div>
         <div className="verify__header text-center text-center">
-          <i class="fa fa-paper-plane" aria-hidden="true"></i>
+          <i className="fa fa-paper-plane" aria-hidden="true"></i>
           <div className="verify__thanks pb-2">Thank for your signup</div>
           <h4
             className="veirfy__title text-white pb-4"

@@ -47,30 +47,30 @@ export default function CodeEditor(props) {
   }
   return (
     <>
-      <div class="row mt-2">
+      <div className="row mt-2">
         <div
-          class="w-100 p-0 px-5 d-flex justify-content-end align-items-center py-2 m-0 text-white"
+          className="w-100 p-0 px-5 d-flex justify-content-end align-items-center py-2 m-0 text-white"
           style={{ backgroundColor: "#120851" }}
         >
-          <p class="px-2 ps-4 m-0">Set language</p>
+          <p className="px-2 ps-4 m-0">Ngôn ngữ</p>
           <select
             onChange={(e) =>  handleChange(e)}
             defaultValue={props.defaultLanguage || "java"}
             style={{ fontSize: "14px" }}
-            class="px-2"
+            className="px-2"
           >
             <option value="java">java</option>
             <option value="cpp">c/cpp</option>
           </select>
         </div>
         <div
-          class="editor-tool-bar col-12 p-0"
+          className="editor-tool-bar col-12 p-0"
           style={{ backgroundColor: "#f5f6f8" }}
         >
           <Editor
             value={code}
             onValueChange={(code) => {setCode(code); props.changeCode(code)}}
-            placeholder={"// Your code here !"}
+            placeholder={"// Nhập mã nguồn của bạn ở đây !"}
             highlight={(code) => hightlightWithLineNumbers(code, language)}
             padding={10}
             textareaId="codeArea"

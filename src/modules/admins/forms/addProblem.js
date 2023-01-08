@@ -1,7 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Editor } from "react-draft-wysiwyg";
 import { EditorState, ContentState } from "draft-js";
-import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
 import "/node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { callGetAllCategory } from "../../../api/category.api";
@@ -15,12 +13,12 @@ import {
 } from "../../../api/problem.api";
 import { AppAction } from "../../../helpers/object.helper";
 import EditorContainer from "../../commons/texteditor";
+import { Loading } from "../loading";
 
 function AddProblem(props) {
   const problemName = useRef();
   const problemLevel = useRef();
   const problemCategory = useRef();
-  const problemScope = useRef();
   const [toast, setToast] = useState(<></>);
   const [initialState, setState] = useState();
   const [categories, setList] = useState([]);
@@ -32,6 +30,7 @@ function AddProblem(props) {
   const oupRequire = useRef();
   const inp = useRef();
   const oup = useRef();
+  const [loading, setLoading] = useState();
   useEffect(() => {
     callGetAllCategory("status=active")
       .then((data) => {
@@ -56,12 +55,13 @@ function AddProblem(props) {
         }
       });
     if (props.action === AppAction.UPDATE) {
+      setLoading(<Loading/>);
       callProblemDetail(props.id)
         .then((data) => {
           const problem = data.data;
           problemName.current.value = problem.problemName;
           problemLevel.current.value = problem.problemLevel;
-          problemScope.current.value = problem.problemScope;
+          problemCategory.current.value = problem.problemCategory.toString();
           setTestcase([
             ...problem.problemCases.map((item) => {
               return { input: item.input, output: item.output, id: item._id };
@@ -78,7 +78,7 @@ function AddProblem(props) {
           setState(EditorState.createWithContent(contentState));
         })
         .catch((error) => {
-          console.log(error);
+
           if (error?.response?.status === 401) {
             window.location.replace("/admin/sign-in");
           } else {
@@ -95,6 +95,8 @@ function AddProblem(props) {
               />
             );
           }
+        }).finally(() => {
+          setLoading();
         });
     }
   }, []);
@@ -138,17 +140,20 @@ function AddProblem(props) {
     const name = problemName.current.value;
     const level = problemLevel.current.value;
     const category = problemCategory.current.value;
-    const scope = "public";
     const content = editorContent;
     const expectedInput = inpRequire.current.value;
     const expectedOutput = oupRequire.current.value;
     const cases = testcases;
+    if(cases.length === 0) {
+      setToast(
+        <Toaster message={"Testcase rỗng"} type="error" />
+      );
+    }
     if (props.action === AppAction.UPDATE) {
       const update = {
         problemName: name,
         problemLevel: level,
         problemCategory: category,
-        problemScope: scope,
         problemQuestion: content,
         expectedInput,
         expectedOutput,
@@ -167,11 +172,11 @@ function AddProblem(props) {
                 props.closeForm();
               })
               .catch((error) => {
-                console.log("add testcase error");
+                console.log("Thêm testcase thất bại");
               });
           })
           .catch((error) => {
-            console.log("remove testcase error");
+            console.log("Xóa testcase thất bại");
           });
       });
     } else {
@@ -179,7 +184,6 @@ function AddProblem(props) {
         problemName: name,
         problemLevel: level,
         problemCategory: category,
-        problemScope: scope,
         problemQuestion: content,
         expectedInput,
         expectedOutput,
@@ -187,9 +191,11 @@ function AddProblem(props) {
       })
         .then(() => {
           setToast(
-            <Toaster message={"Create problem success"} type="success" />
+            <Toaster message={"Tạo thành công"} type="success" />
           );
-          props.closeForm();
+          setTimeout(() => {
+            props.closeForm();
+          }, 2000);
         })
         .catch((error) => {});
     }
@@ -200,19 +206,19 @@ function AddProblem(props) {
   const renderTestcase = testcases
     ? testcases.map((item, index) => {
         return (
-          <li class="testcase-preview mb-1" key={index}>
-            <span class="d-flex justify-content-between align-items-center">
-              <span class="px-2">testcase #{index + 1}</span>
+          <li className="testcase-preview mb-1" key={index}>
+            <span className="d-flex justify-content-between align-items-center">
+              <span className="px-2">testcase #{index + 1}</span>
               <span
-                class="btn btn-danger m-0 my-2"
+                className="btn btn-danger m-0 my-2"
                 onClick={() => removeTestcase(index, item?.id)}
               >
-                <i class="fa fa-trash" aria-hidden="true"></i>
+                <i className="fa fa-trash" aria-hidden="true"></i>
               </span>
             </span>
-            <span class="preview px-2 bg-white border d-flex justify-content-center align-items-center">
-              <pre class="w-50">{item.input}</pre>
-              <pre class="w-50">{item.output}</pre>
+            <span className="preview px-2 bg-white border d-flex justify-content-center align-items-center">
+              <pre className="w-50">{item.input}</pre>
+              <pre className="w-50">{item.output}</pre>
             </span>
           </li>
         );
@@ -220,60 +226,49 @@ function AddProblem(props) {
     : null;
   return (
     <>
+      {loading}
       {toast}
-      <div class="col-md-8 grid-margin stretch-card">
-        <div class="card">
-          <div class="card-body">
+      <div className="col-md-8 grid-margin stretch-card">
+        <div className="card">
+          <div className="card-body">
             <div style={{ height: "800px", overflowY: "scroll" }}>
-              <h4 class="card-title">{props.title}</h4>
-              <p class="card-description">{props.description}</p>
-              <form class="forms-sample">
-                <div class="form-group">
-                  <label for="exampleInputName1">Input Name</label>
+              <h4 className="card-title">{props.title}</h4>
+              <p className="card-description">{props.description}</p>
+              <form className="forms-sample">
+                <div className="form-group">
+                  <label for="exampleInputName">Tên bài toán</label>
                   <input
                     ref={problemName}
                     type="text"
-                    class="form-control"
+                    className="form-control"
                     id="exampleInputName1"
                     placeholder="Problem Name"
                   />
                 </div>
-                <div class="form-group">
-                  <label for="exampleInputPassword4">Select Level</label>
+                <div className="form-group">
+                  <label for="exampleInputPassword4">Chọn mức độ</label>
                   <select
                     ref={problemLevel}
-                    class="form-control"
+                    className="form-control"
                     defaultValue={"easy"}
                     id="exampleSelectGender"
                   >
-                    <option value={"easy"}>Easy</option>
-                    <option value={"medium"}>Medium</option>
+                    <option value={"easy"}>Dễ</option>
+                    <option value={"medium"}>Trung bình</option>
                   </select>
                 </div>
-                <div class="form-group">
-                  <label for="exampleSelectGender">Select Scope</label>
-                  <select
-                    ref={problemScope}
-                    class="form-control"
-                    defaultValue={"Public"}
-                    id="exampleSelectGender"
-                  >
-                    <option value="public">Public</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="exampleSelectGender">Select Category</label>
+                <div className="form-group">
+                  <label for="exampleSelectGender">Chọn danh mục</label>
                   <select
                     ref={problemCategory}
-                    class="form-control"
-                    defaultValue={"Public"}
+                    className="form-control"
                     id="exampleSelectGender"
                   >
                     {options}
                   </select>
                 </div>
-                <div class="form-group">
-                  <label for="exampleSelectGender">Input Question</label>
+                <div className="form-group">
+                  <label for="exampleSelectGender">Soạn thảo câu hỏi</label>
                   <div>
                     <EditorContainer
                       id={props.id}
@@ -282,60 +277,60 @@ function AddProblem(props) {
                     />
                   </div>
                 </div>
-                <div class="d-flex justify-content-center align-items-center">
-                  <div class="form-group w-50 mr-1 mb-2">
-                    <label for="exampleTextarea1">Input require</label>
+                <div className="d-flex justify-content-center align-items-center">
+                  <div className="form-group w-50 mr-1 mb-2">
+                    <label for="exampleTextarea1">Ràng buộc đầu vào</label>
                     <textarea
                       ref={inpRequire}
                       style={{ lineHeight: "25px" }}
-                      class="form-control mb-0"
+                      className="form-control mb-0"
                       id="exampleTextarea1"
                       rows="4"
                     ></textarea>
                   </div>
-                  <div class="form-group w-50 ml-1 mb-2">
-                    <label for="exampleTextarea1">Output require</label>
+                  <div className="form-group w-50 ml-1 mb-2">
+                    <label for="exampleTextarea1">Ràng buộc đầu ra</label>
                     <textarea
                       ref={oupRequire}
                       style={{ lineHeight: "25px" }}
-                      class="form-control mb-0"
+                      className="form-control mb-0"
                       id="exampleTextarea1"
                       rows="4"
                     ></textarea>
                   </div>
                 </div>
-                <div class="d-flex justify-content-center align-items-center">
-                  <div class="form-group w-50 mr-1 mb-2">
-                    <label for="exampleTextarea1">Input testcase</label>
+                <div className="d-flex justify-content-center align-items-center">
+                  <div className="form-group w-50 mr-1 mb-2">
+                    <label for="exampleTextarea1">Đầu vào testcase</label>
                     <textarea
                       ref={inp}
                       style={{ lineHeight: "25px" }}
-                      class="form-control mb-0"
+                      className="form-control mb-0"
                       id="exampleTextarea1"
                       rows="4"
                     ></textarea>
                   </div>
-                  <div class="form-group w-50 ml-1 mb-2">
-                    <label for="exampleTextarea1">Expected output</label>
+                  <div className="form-group w-50 ml-1 mb-2">
+                    <label for="exampleTextarea1">Đầu ra testcase</label>
                     <textarea
                       ref={oup}
                       style={{ lineHeight: "25px" }}
-                      class="form-control mb-0"
+                      className="form-control mb-0"
                       id="exampleTextarea1"
                       rows="4"
                     ></textarea>
                   </div>
                 </div>
-                <div class="text-end">
+                <div className="text-end">
                   <span
                     onClick={() => addTestCase()}
                     type="submit"
-                    class="btn text-white btn-success mr-0"
+                    className="btn text-white btn-success mr-0"
                   >
-                    Add testcase
+                    Thêm testcase
                   </span>
                 </div>
-                <div class="testcase">
+                <div className="testcase">
                   <ul style={{ listStyle: "none", padding: "0" }}>
                     {renderTestcase}
                   </ul>
@@ -343,12 +338,12 @@ function AddProblem(props) {
                 <span
                   onClick={() => addProblem()}
                   type="submit"
-                  class="btn text-white btn-primary me-2"
+                  className="btn text-white btn-primary me-2"
                 >
-                  Submit
+                  Thêm
                 </span>
-                <span class="btn btn-light" onClick={() => props.closeForm()}>
-                  Cancel
+                <span className="btn btn-light" onClick={() => props.closeForm()}>
+                  Thoát
                 </span>
               </form>
             </div>

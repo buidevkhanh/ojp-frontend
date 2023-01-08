@@ -1,4 +1,4 @@
-export const SERVER_HOST = "http://localhost:8080";
+export const SERVER_HOST = "http://192.168.68.112:8080";
 export const SOCKET_HOST = "http://localhost:8080";
 //export const SERVER_HOST = "https://17cb-118-70-236-74.ap.ngrok.io";
 export const SERVER_PREFIX = "/api/v1";

@@ -19,6 +19,7 @@ function AdminLogin() {
         if (remem.checked) isSave = 30;
         setCookie("__token", data.data.token, isSave);  
         setToast(<Toaster message="Login success" type="success" />);
+        window.location.replace("/admin");
       })
       .catch((error) => {
         setToast(
@@ -38,44 +39,43 @@ function AdminLogin() {
   return (
     <>
       {toast}
-      <div class="d-flex f-column justify-content-center align-items-center full__screen">
-        <div class="admin__login__header">Online Judge Project</div>
-        <div class="admin__login__form">
-          <div class="t-secondary">Email address</div>
-          <div class="input__group">
+      <div className="d-flex f-column justify-content-center align-items-center full__screen">
+        <div className="admin__login__header">Online Judge Project</div>
+        <div className="admin__login__form">
+          <div className="t-secondary">Địa chỉ email</div>
+          <div className="input__group">
             <input
               style={{ outline: "none !important", border: "none !important" }}
               ref={username}
-              placeholder="Enter root email"
+              placeholder="Nhập địa chỉ email..."
               type="text"
             />
-            <i class="fa fa-user-o" aria-hidden="true"></i>
+            <i className="fa fa-user-o" aria-hidden="true"></i>
           </div>
-          <div class="t-secondary mt-1">Password</div>
-          <div class="input__group">
+          <div className="t-secondary mt-1">Mật khẩu</div>
+          <div className="input__group">
             <input
               style={{ outline: "none !important", border: "none !important" }}
               ref={password}
               type="password"
-              placeholder="Enter root password"
+              placeholder="Nhập mật khẩu..."
             />
-            <i class="fa fa-key" aria-hidden="true"></i>
+            <i className="fa fa-key" aria-hidden="true"></i>
           </div>
-          <div class="login__area d-flex mt-3 justify-content-between">
+          <div className="login__area d-flex mt-3 justify-content-between">
             <div>
-              <input type="checkbox" id="remember" /> Remember me ?
+              <input type="checkbox" id="remember" /> Ghi nhớ ?
             </div>
-            <div onClick={() => adminLogin()} class="login__button">
-              Login
+            <div onClick={() => adminLogin()} className="login__button">
+              Đăng nhập
             </div>
           </div>
         </div>
         <div
-          class="mt-3 t-main cursor"
-          onClick={() => window.location.replace("/auths/sign-in")}
+          className="mt-4 t-main cursor"
+          onClick={() => window.location.replace("/sign-in")}
         >
-          <i class="fa fa-arrow-left" aria-hidden="true"></i> Back to client
-          home
+          <i className="fa fa-arrow-left mx-2" aria-hidden="true"></i> Màn hình người dùng
         </div>
       </div>
     </>

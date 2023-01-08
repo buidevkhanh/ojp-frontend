@@ -8,6 +8,7 @@ import ProblemDetail from "../users/detail";
 import UserHome from "../users/home";
 import UserProblem from "../users/problem";
 import Profile from "../users/profile";
+import Ranking from "../users/ranking";
 import UserSubmission from "../users/submission";
 import { VerifyAccount } from "../users/verify";
 
@@ -17,15 +18,15 @@ export function AppRoutes() {
       <Routes>
         <Route
           exact
-          path="/auths/sign-in"
+          path="/sign-in"
           element={<UserAuth state="sign-in" />}
         ></Route>
         <Route
           exact
-          path="/auths/sign-up"
+          path="/sign-up"
           element={<UserAuth state="sign-up" />}
         ></Route>
-        <Route exact path="/auths/verify" element={<VerifyAccount />}></Route>
+        <Route exact path="/verify" element={<VerifyAccount />}></Route>
         <Route exact path="/admin/sign-in" element={<AdminLogin />}></Route>
         <Route exact path="/admin" element={<AdminIndex />}></Route>
         <Route exact path="/problem" element={<UserProblem />}></Route>
@@ -38,6 +39,7 @@ export function AppRoutes() {
         <Route exact path="/contest" element={<UserContest/>}></Route>
         <Route exact path="/start/contest/:id" element={<ContestOrganize/>}></Route>
         <Route exact path="/profile" element={<Profile/>}></Route>
+        <Route exact path="/ranking" element={<Ranking/>}></Route>
         <Route path="/*" element={<UserHome />}></Route>
       </Routes>
     </BrowserRouter>

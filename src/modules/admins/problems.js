@@ -3,16 +3,19 @@ import { callChangeStatus, callGetProblem } from "../../api/problem.api";
 import { AppAction, FormType } from "../../helpers/object.helper";
 import { Toaster } from "../commons/toast";
 import Form from "./form";
+import { Loading } from "./loading";
 
 function Problem() {
   const [form, setForm] = useState(<></>);
   const [list, setList] = useState([]);
+  const [loading, setLoading] = useState();
   const [toast, setToast] = useState(<></>);
 
   useEffect(() => {
     refreshProblem();
   }, []);
   function refreshProblem() {
+    setLoading(<Loading/>);
     callGetProblem(1)
       .then((data) => {
         setList(data.data.data);
@@ -34,6 +37,8 @@ function Problem() {
             />
           );
         }
+      }).finally(() => {
+        setLoading();
       });
   }
   function addProblem() {
@@ -107,39 +112,41 @@ function Problem() {
             break;
         }
         return (
-          <tr key={index} class="text-center">
+          <tr key={index} className="text-center">
             <td style={{ width: "10%" }}>{item._id}</td>
             <td style={{ width: "20%" }}>{item.problemName}</td>
             <td style={{ width: "20%" }}>{item.problemCode}</td>
             <td style={{ width: "5%" }} class={color}>
               {item.status}
             </td>
-            <td style={{ width: "5%" }}>{item.problemScope}</td>
+            <td
+              style={{ width: "5%" }}
+            >{item.score}
+            </td>
             <td
               style={{ width: "5%" }}
               class={item.level === "easy" ? "text-success" : "text-danger"}
             >
               {item.problemLevel}
             </td>
-            <td style={{ width: "10%" }}>{item.class || "N/A"}</td>
             <td>
-              <span class="btn btn-info" onClick={() => showDetail(item)}>
-                <i class="fa fa-info-circle" aria-hidden="true"></i>
+              <span className="btn btn-info" onClick={() => showDetail(item)}>
+                <i className="fa fa-info-circle" aria-hidden="true"></i>
               </span>
               <span
-                class="btn btn-secondary"
+                className="btn btn-secondary"
                 onClick={() => updateProblem(item._id)}
               >
-                <i class="fa fa-pencil" aria-hidden="true"></i>
+                <i className="fa fa-pencil" aria-hidden="true"></i>
               </span>
               <span
-                class="btn btn-danger"
+                className="btn btn-danger"
                 onClick={() => changeStatus(item._id)}
               >
                 {item.status === "active" ? (
-                  <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                  <i className="fa fa-eye-slash" aria-hidden="true"></i>
                 ) : (
-                  <i class="fa fa-eye" aria-hidden="true"></i>
+                  <i className="fa fa-eye" aria-hidden="true"></i>
                 )}
               </span>
             </td>
@@ -151,38 +158,37 @@ function Problem() {
     <>
       {toast}
       {form}
-      <div class="col-lg-12 grid-margin stretch-card">
-        <div class="card">
-          <div class="card-body">
-            <h4 class="card-title">Manage problems</h4>
-            <div class="d-flex justify-content-between">
-              <p class="card-description">
-                Manage problems witch showing in main's student page
+      <div className="col-lg-12 grid-margin stretch-card">
+        <div className="card">
+          <div className="card-body">
+            <h4 className="card-title">Quản lý bài toán</h4>
+            <div className="d-flex justify-content-between">
+              <p className="card-description">
+                Quản lý bài toán
               </p>
               <button
                 onClick={() => addProblem()}
                 type="button"
-                class="btn btn-primary btn-icon-text"
+                className="btn btn-primary btn-icon-text"
               >
-                <i class="ti-plus btn-icon-prepend"></i>
-                Add problem
+                <i class="fa-regular fa-plus"></i>
+                Thêm bài toán
               </button>
             </div>
-            <div class="table-responsive">
-              <table class="table table-hover">
+            <div className="table-responsive" style={{maxHeight: '560px', overflowY: 'scroll'}}>
+              <table className="table table-hover">
                 <thead>
-                  <tr class="text-center">
+                  <tr className="text-center">
                     <th style={{ width: "10%" }}>ID</th>
-                    <th style={{ width: "25%" }}>Name</th>
-                    <th style={{ width: "10%" }}>Code</th>
-                    <th style={{ width: "5%" }}>Status</th>
-                    <th style={{ width: "5%" }}>Scope</th>
-                    <th style={{ width: "5%" }}>Level</th>
-                    <th style={{ width: "20%" }}>Class</th>
-                    <th>Actions</th>
+                    <th style={{ width: "25%" }}>Tên bài</th>
+                    <th style={{ width: "10%" }}>Mã bài</th>
+                    <th style={{ width: "5%" }}>Trạng thái</th>
+                    <th style={{ width: "5%" }}>Số điểm</th>
+                    <th style={{ width: "5%" }}>Mức độ</th>
+                    <th>Tính năng</th>
                   </tr>
                 </thead>
-                <tbody>{renderProblem}</tbody>
+                <tbody>{renderProblem}{loading}</tbody>
               </table>
             </div>
           </div>

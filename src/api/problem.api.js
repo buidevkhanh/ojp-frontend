@@ -157,6 +157,22 @@ export function userGetProblem(
   });
 }
 
+export function statistic(
+) {
+  return new Promise((resolve, reject) => {
+    axios({
+      url: `${SERVER_HOST}${SERVER_PREFIX}/problem/statistic`,
+      method: GET,
+    })
+      .then((data) => {
+        resolve(data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
 export function callGetDetail(code) {
   return new Promise((resolve, reject) => {
     axios({

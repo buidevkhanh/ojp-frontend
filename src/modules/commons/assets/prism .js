@@ -879,7 +879,7 @@ var Prism = (function (_self) {
 			attributes += ' ' + name + '="' + (env.attributes[name] || '').replace(/"/g, '&quot;') + '"';
 		}
 
-		return '<' + env.tag + ' class="' + env.classes.join(' ') + '"' + attributes + '>' + env.content + '</' + env.tag + '>';
+		return '<' + env.tag + ' className="' + env.classes.join(' ') + '"' + attributes + '>' + env.content + '</' + env.tag + '>';
 	};
 
 	/**
@@ -1933,10 +1933,10 @@ delete Prism.languages.c['boolean'];
 			if (outputLines.hasOwnProperty(i)) {
 				// outputLines were removed from codeLines so missed out on escaping
 				// of markup so do it here.
-				codeLines[i] = '<span class="token output">'
+				codeLines[i] = '<span className="token output">'
 					+ Prism.util.encode(outputLines[i]) + '</span>';
 			} else {
-				codeLines[i] = '<span class="token command">'
+				codeLines[i] = '<span className="token command">'
 					+ codeLines[i] + '</span>';
 			}
 		}

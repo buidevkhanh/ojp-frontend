@@ -63,11 +63,50 @@ export function userGetRanking(){
   });
 }
 
-export function getTopTen() {
+export function getTop() {
   return new Promise((resolve, reject) => {
     axios({
       url: `${SERVER_HOST}${SERVER_PREFIX}/user/ranking`,
       method: GET
+    })
+      .then((data) => {
+        resolve(data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
+
+export function getAdminInfo() {
+  const token = getCookie('__token');
+  return new Promise((resolve, reject) => {
+    axios({
+      url: `${SERVER_HOST}${SERVER_PREFIX}/admin/info`,
+      method: GET,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then((data) => {
+        resolve(data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
+export function adminStatistic() {
+  const token = getCookie('__token');
+  return new Promise((resolve, reject) => {
+    axios({
+      url: `${SERVER_HOST}${SERVER_PREFIX}/admin/statistic`,
+      method: GET,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
     })
       .then((data) => {
         resolve(data);

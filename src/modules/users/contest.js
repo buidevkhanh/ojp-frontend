@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { callRegister, userGetContest, userGetOwn } from "../../api/contest.api";
 import Footer from "../commons/footer";
+import { Loading } from "../commons/loading";
 import NavigationBar from "../commons/navigation";
 import { Toaster } from "../commons/toast";
 
@@ -9,29 +10,43 @@ export default function UserContest() {
     const [previous, setPrevious] = useState([]);
     const [current, setCurrent] = useState([]);
     const [toast, setToast] = useState(<></>);
+    const [loading, setLoading] = useState();
 
     useEffect(() => {
-        userGetContest().then((data) => {
-            setUpcomming(data.data.data);
+        setLoading(<Loading/>);
+        Promise.all([
+            userGetContest(),
+            userGetOwn('previous'),
+            userGetOwn('current')
+        ]).then((response) => {
+            setUpcomming(response[0].data.data);
+            setPrevious(response[1].data.data);
+            setCurrent(response[2].data.data);
+            setLoading();
+        }).catch(() => {
+            window.location.replace('/sign-in');
         })
-        userGetOwn('previous').then(data => {
-            setPrevious(data.data.data);
-        })
-        userGetOwn('current').then(data => {
-            setCurrent(data.data.data);
-        })
+        // userGetContest().then((data) => {
+        //     setUpcomming(data.data.data);
+        // })
+        // userGetOwn('previous').then(data => {
+        //     setPrevious(data.data.data);
+        // })
+        // userGetOwn('current').then(data => {
+        //     setCurrent(data.data.data);
+        // })
     }, []);
 
     function calcStt(beginAt, duration) {
         const dbegin = new Date(beginAt);
         if(new Date() < dbegin) {
-            return <span class="text-secondary">Coming</span>
+            return <span className="text-secondary">Sắp tới</span>
         } 
         if(new Date() >= dbegin && new Date() <= new Date(beginAt).setHours(new Date(beginAt).getHours() + +duration)) {
-            return <span class="text-success">Starting</span>
+            return <span className="text-success">Bắt đầu</span>
         }
         if(new Date() > new Date(beginAt).setHours(new Date(beginAt).getHours() + +duration)) {
-            return <span class="text-danger">Closed</span>
+            return <span className="text-danger">Kết thúc</span>
         }
     }
 
@@ -45,29 +60,29 @@ export default function UserContest() {
 
     const upcommings = upcoming ? upcoming.map((item) => {
         return (
-            <li class="d-flex my-1 justify-content-between align-items-center bg-light px-2 py-2">
-                <div class="contest-stats w-50">
+            <li className="d-flex my-1 justify-content-between align-items-center bg-light px-2 py-2">
+                <div className="contest-stats w-50">
                     <div style={{fontSize: '16px', fontWeight: 'bold'}}>{item.name}</div>
                     <div>
-                        <i class="fa fa-users mx-1 text-secondary" aria-hidden="true"></i>Participants: {item.users}
+                        <i className="fa fa-users mx-1 text-secondary" aria-hidden="true"></i>Người tham gia: {item.users}
                     </div>
                     <div>
-                        <i class="fa fa-users mx-1 text-secondary" aria-hidden="true"></i>Remain: {item.remainMember}
+                        <i className="fa fa-users mx-1 text-secondary" aria-hidden="true"></i>Còn lại: {item.remainMember}
                     </div>
                     <div>
-                        Description: {item.description}
+                        Mô tả: {item.description}
                     </div>
                 </div>
                 <div>
                     {calcStt(item.beginAt, item.duration)}
                 </div>
                 { item.remainMember == 0 ?
-                <div class="btn btn-secondary">
-                    Register 
+                <div className="btn btn-secondary">
+                    Đăng ký 
                 </div>
                 :
-                <div class="btn btn-primary" onClick={() => userRegister(item._id)}>
-                    Register 
+                <div className="btn btn-primary" onClick={() => userRegister(item._id)}>
+                    Đăng ký 
                 </div>
                 }
             </li>
@@ -76,24 +91,24 @@ export default function UserContest() {
 
     const previousList = previous ? previous.map((item) => {
         return (
-            <li class="d-flex my-1 justify-content-between align-items-center bg-light px-2 py-2">
-                <div class="contest-stats w-50">
+            <li className="d-flex my-1 justify-content-between align-items-center bg-light px-2 py-2">
+                <div className="contest-stats w-50">
                     <div style={{fontSize: '16px', fontWeight: 'bold'}}>{item.name}</div>
                     <div>
-                        <i class="fa fa-users mx-1 text-secondary" aria-hidden="true"></i>Participants: {item.users}
+                        <i className="fa fa-users mx-1 text-secondary" aria-hidden="true"></i>Người tham gia: {item.users}
                     </div>
                     <div>
-                        <i class="fa fa-users mx-1 text-secondary" aria-hidden="true"></i>Remain: {item.remainMember}
+                        <i className="fa fa-users mx-1 text-secondary" aria-hidden="true"></i>Còn lại: {item.remainMember === 'No limit' ? 'Không giới hạn' : item.remainMember}
                     </div>
                     <div>
-                        Description: {item.description}
+                        Mô tả: {item.description}
                     </div>
                 </div>
                 <div>
                     {calcStt(item.beginAt, item.duration)}
                 </div>
-                <div class="btn btn-primary" onClick={() => window.location.replace(`/start/contest/${item._id}`)}>
-                    View result
+                <div className="btn btn-primary" onClick={() => window.location.replace(`/start/contest/${item._id}`)}>
+                    Kết quả
                 </div>
             </li>
         )
@@ -101,29 +116,29 @@ export default function UserContest() {
 
     const currentList = current ? current.map((item) => {
         return (
-            <li class="d-flex my-1 justify-content-between align-items-center bg-light px-2 py-2">
-                <div class="contest-stats w-50">
+            <li className="d-flex my-1 justify-content-between align-items-center bg-light px-2 py-2">
+                <div className="contest-stats w-50">
                     <div style={{fontSize: '16px', fontWeight: 'bold'}}>{item.name}</div>
                     <div>
-                        <i class="fa fa-users mx-1 text-secondary" aria-hidden="true"></i>Participants: {item.users}
+                        <i className="fa fa-users mx-1 text-secondary" aria-hidden="true"></i>Người tham gia: {item.users}
                     </div>
                     <div>
-                        <i class="fa fa-users mx-1 text-secondary" aria-hidden="true"></i>Remain: {item.remainMember}
+                        <i className="fa fa-users mx-1 text-secondary" aria-hidden="true"></i>Còn lại: {item.remainMember}
                     </div>
                     <div>
-                        Description: {item.description}
+                        Mô tả: {item.description}
                     </div>
                 </div>
                 <div>
                     {calcStt(item.beginAt, item.duration)}
                 </div>
-                <div class="w-25 text-right">
+                <div className="w-25 text-right">
                     { new Date(item.beginAt) > new Date() ?
-                    <div class="btn btn-secondary w-50">
-                        Waiting 
+                    <div className="btn btn-secondary w-50">
+                        Vui lòng chờ 
                     </div>  : 
-                    <div class="btn btn-success w-50" onClick={() => window.location.replace(`/start/contest/${item._id}`)}>
-                        Join 
+                    <div className="btn btn-success w-50" onClick={() => window.location.replace(`/start/contest/${item._id}`)}>
+                        Tham gia 
                     </div>
                     }  
                 </div> 
@@ -133,47 +148,48 @@ export default function UserContest() {
 
     return (
     <>
+        {loading}
         {toast}
         <NavigationBar />
-            <div class="container">
-                <div class="user-contest">
+            <div className="container">
+                <div className="user-contest">
                 </div>
-                <div class="user-contest my-5">
+                <div className="user-contest my-5">
                     { current?.length ? 
-                    <div class="pl-3">
-                        <div class="bg-main">
-                            <h4 class="text-secondary mt-2">Your contest</h4>
-                            <ul class="m-0 p-0" style={{listStyle:'none'}}>
+                    <div className="pl-3">
+                        <div className="bg-main">
+                            <h4 className="text-secondary mt-2">Bài thi của bạn</h4>
+                            <ul className="m-0 p-0" style={{listStyle:'none'}}>
                                 {currentList}
                             </ul>
                         </div>
                     </div>
                     :
-                    <div class="w-100 d-flex bg-linear-main px-3 p-2 text-white">
-                        <div class="w-50 p-0 px-5 d-flex justify-content-center flex-column align-items-start">
-                            You have not registered to perticipate in any contest yet.<br/>
-                            <div class="btn btn-danger mt-2"><strong>Register now !</strong></div>
+                    <div className="w-100 d-flex bg-linear-main px-3 p-2 text-white">
+                        <div className="w-50 p-0 px-5 d-flex justify-content-center flex-column align-items-start">
+                            Bạn chưa đăng ký tham gia cuộc thi nào gần đây.<br/>
+                            <div className="btn btn-danger mt-2"><strong>Đăng ký ngay !</strong></div>
                         </div>
-                        <div class="w-50">
-                            <img src="https://3rhxcj3e1iab1odg58u7zxfm-wpengine.netdna-ssl.com/wp-content/uploads/2021/08/resources_banner.png"/>
+                        <div className="w-50">
+                            <img src="https://res.cloudinary.com/de6k85koo/image/upload/v1672847603/learning_kyzxeg.png"/>
                         </div>
                     </div>
                     }
                 </div>
-                <div class="w-100 list-contest mb-4">
-                    <div class="w-100 row m-0">
-                        <div class="col-md-8">
-                            <h4 class="text-secondary">Contest upcomming</h4>
-                            <ul class="m-0 p-0" style={{listStyle:'none'}}>
-                                {upcommings?.length ? upcommings : <div class="text-center border py-5">No upcoming contest, please try laster !</div>}
+                <div className="w-100 list-contest mb-4">
+                    <div className="w-100 row m-0">
+                        <div className="col-md-8">
+                            <h4 className="text-secondary">Bài thi sắp diễn ra</h4>
+                            <ul className="m-0 p-0" style={{listStyle:'none'}}>
+                                {upcommings?.length ? upcommings : <div className="text-center border py-5">Không có bài thi nào sắp diễn ra, vui lòng quay lại sau !</div>}
                             </ul>
-                            <h4 class="text-secondary mt-2">Previous contest</h4>
-                            <ul class="m-0 p-0" style={{listStyle:'none'}}>
-                                {previous?.length ? previousList : <div class="text-center border py-5">No previous contest, try to participate in an any contest !</div>}
+                            <h4 className="text-secondary mt-2">Bài thi đã tham gia</h4>
+                            <ul className="m-0 p-0" style={{listStyle:'none'}}>
+                                {previous?.length ? previousList : <div className="text-center border py-5">Bạn chưa làm bài thi nào trước đó, hãy thử tham gia một bài thi nhé !</div>}
                             </ul>
                         </div>
-                        <div class="col-md-4 p-0">
-                            <img class="img-fluid w-100" src="https://www.blairsinger.com/wp-content/uploads/2022/07/Summit-Leadership-Ads-Vertical-Banner-1-300px-width.jpg"></img>
+                        <div className="col-md-4 p-0">
+                            <img className="img-fluid w-100" src="https://www.blairsinger.com/wp-content/uploads/2022/07/Summit-Leadership-Ads-Vertical-Banner-1-300px-width.jpg"></img>
                         </div>
                     </div>
                 </div>

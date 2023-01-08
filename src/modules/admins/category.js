@@ -9,15 +9,18 @@ import { Toaster } from "../commons/toast";
 import Form from "./form";
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
+import { Loading } from "./loading";
 
 function Category() {
   const [form, setForm] = useState(<></>);
   const [toast, setToast] = useState(<></>);
   const [list, setList] = useState();
+  const [loading, setLoading] = useState();
   useEffect(() => {
     refreshCategory();
   }, []);
   function refreshCategory() {
+    setLoading(<Loading/>)
     callGetCategory(1)
       .then((data) => {
         setList(data.data.data);
@@ -39,20 +42,22 @@ function Category() {
             />
           );
         }
-      });
+      }).finally(() => {
+        setLoading();
+      })
   }
   function removeCategory(id) {
     confirmAlert({
-      title: "Remove a category",
-      message: "Are you sure to do this ! This action can't be undo",
+      title: "Xóa danh mục",
+      message: "Bạn không thể hoàn tác hành động này",
       buttons: [
         {
-          label: "Yes",
+          label: "Đồng ý",
           onClick: () => {
             callRemoveCategory(id)
               .then(() => {
                 setToast(
-                  <Toaster message={"remove category success"} type="success" />
+                  <Toaster message={"Xóa danh mục thành công"} type="success" />
                 );
                 refreshCategory();
               })
@@ -77,7 +82,7 @@ function Category() {
           },
         },
         {
-          label: "No",
+          label: "Thoát",
         },
       ],
     });
@@ -114,12 +119,12 @@ function Category() {
   const listCategory = list
     ? list.map((item, index) => {
         return (
-          <tr key={index} class="text-center">
+          <tr key={index} className="text-center">
             <td style={{ width: "15%" }}>{item._id}</td>
             <td style={{ width: "25%" }}>{item.categoryName}</td>
             <td style={{ width: "5%" }}>
               <img
-                class="preview-img"
+                className="preview-img"
                 src={item.categoryLogo}
                 alt={"preview-category"}
               ></img>
@@ -136,32 +141,32 @@ function Category() {
             </td>
             <td style={{ width: "12%" }}>{item.createdAt}</td>
             <td style={{ width: "12%" }}>{item.updatedAt}</td>
-            <td class="text-danger d-flex justify-content-center">
+            <td className="text-danger d-flex justify-content-center">
               <div
-                class="btn btn-secondary"
+                className="btn btn-secondary"
                 onClick={() => editProblem(item._id)}
               >
-                <i class="fa fa-pencil" aria-hidden="true"></i>
+                <i className="fa fa-pencil" aria-hidden="true"></i>
               </div>
               <div
-                class="btn btn-secondary text-danger"
+                className="btn btn-secondary text-danger"
                 onClick={() => removeCategory(item._id)}
               >
-                <i class="fa fa-trash" aria-hidden="true"></i>
+                <i className="fa fa-trash" aria-hidden="true"></i>
               </div>
               {item.status === "active" ? (
                 <div
-                  class="btn btn-secondary text-success"
+                  className="btn btn-secondary text-success"
                   onClick={() => changeStatus(item._id)}
                 >
-                  <i class="fa fa-eye" aria-hidden="true"></i>
+                  <i className="fa fa-eye" aria-hidden="true"></i>
                 </div>
               ) : (
                 <div
-                  class="btn btn-secondary text-dark"
+                  className="btn btn-secondary text-dark"
                   onClick={() => changeStatus(item._id)}
                 >
-                  <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                  <i className="fa fa-eye-slash" aria-hidden="true"></i>
                 </div>
               )}
             </td>
@@ -173,37 +178,37 @@ function Category() {
     <>
       {toast}
       {form}
-      <div class="col-lg-12 grid-margin stretch-card">
-        <div class="card">
-          <div class="card-body">
-            <h4 class="card-title">Manage categories</h4>
-            <div class="d-flex justify-content-between">
-              <p class="card-description">
-                Manage categories witch showing in main's student page
+      <div className="col-lg-12 grid-margin stretch-card">
+        <div className="card">
+          <div className="card-body">
+            <h4 className="card-title">Quản lý danh mục</h4>
+            <div className="d-flex justify-content-between">
+              <p className="card-description">
+                Quản lý danh mục
               </p>
               <button
                 onClick={() => addProblem()}
                 type="button"
-                class="btn btn-primary btn-icon-text"
+                className="btn btn-primary btn-icon-text"
               >
-                <i class="ti-plus btn-icon-prepend"></i>
-                Add Category
+                <i class="fa-regular fa-plus"></i>
+                Thêm danh mục
               </button>
             </div>
-            <div class="table-responsive">
-              <table class="table table-hover">
+            <div className="table-responsive" style={{maxHeight: '550px', overflowY: 'scroll'}}>
+              <table className="table table-hover">
                 <thead>
-                  <tr class="text-center">
+                  <tr className="text-center">
                     <th style={{ width: "15%" }}>ID</th>
-                    <th style={{ width: "25%" }}>Name</th>
+                    <th style={{ width: "25%" }}>Tên danh mục</th>
                     <th style={{ width: "15%" }}>Logo</th>
-                    <th style={{ width: "10%" }}>Status</th>
-                    <th style={{ width: "10%" }}>Created Time</th>
-                    <th style={{ width: "10%" }}>Updated Time</th>
-                    <th>Actions</th>
+                    <th style={{ width: "10%" }}>Trạng thái</th>
+                    <th style={{ width: "10%" }}>Tạo lúc</th>
+                    <th style={{ width: "10%" }}>Cập nhật lúc</th>
+                    <th>Tính năng</th>
                   </tr>
                 </thead>
-                <tbody>{listCategory}</tbody>
+                <tbody>{listCategory}{loading}</tbody>
               </table>
             </div>
           </div>

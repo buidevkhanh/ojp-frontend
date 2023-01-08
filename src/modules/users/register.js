@@ -18,7 +18,7 @@ export function Register() {
       onClick={() => userSignUp()}
       className="form__input__submit text-center mt-3 mb-5"
     >
-      <span className="submit__input__state">Sign up</span>
+      <span className="submit__input__state">Đăng ký tài khoản</span>
     </div>
   );
   const [submitState, setSubmitState] = useState(signUpBtn);
@@ -29,7 +29,7 @@ export function Register() {
     const displayTxt = getRefValue(displayName);
     const emailTxt = getRefValue(email);
     if (passwordTxt !== repassTxt) {
-      setToast(<Toaster message="Password didn't match" type="error" />);
+      setToast(<Toaster message="Mật khẩu không khớp" type="error" />);
       setTimeout(() => {
         setSubmitState(signUpBtn);
       }, 500);
@@ -66,20 +66,20 @@ export function Register() {
 
   function setUp() {
     setToast(
-      <Toaster message="Register account success ! verify it" type="success" />
+      <Toaster message="Đăng ký tài khoản thành công ! Hãy xác thực" type="success" />
     );
     setCookie("_userNeedVerified", getRefValue(email), 1);
     setTimeout(() => {
       setSubmitState(signUpBtn);
     }, 500);
     setTimeout(() => {
-      window.location.replace("/auths/verify");
+      window.location.replace("/verify");
     }, 1000);
   }
 
   function userSignUp() {
     setSubmitState(
-      <span className="d-inline-block mt-5 mb-5" style={{ height: "40px" }}>
+      <span className="d-inline-block w-100 text-center mt-5 mb-5" style={{ height: "40px" }}>
         <BeatLoader color="red" speedMultiplier={0.5} size="10" />
       </span>
     );
@@ -93,29 +93,29 @@ export function Register() {
           className="text-white mb-1 sub__welcome"
           style={{ fontWeight: "bold", visibility: "hidden" }}
         >
-          WELCOME<br></br>
-          Online Judge System
+          Chào mừng<br></br>
+          OnlineJudge
         </h3>
         <h6
           className="text__secondary pb-4 sub__welcome"
           style={{ visibility: "hidden" }}
         >
-          Learn to code every day
+          Luyện tập lập trình mỗi ngày
         </h6>
         <div className="auth__form text-start px-5 py-5 d-flex justify-content-center align-items-center flex-column">
           <h3 className="text__secondary mb-3" style={{ fontWeight: "bold" }}>
-            Online Judge System
+            OnlineJudge
           </h3>
           <div className="w-100">
             <h6 className="auth__form__name text-left mb-3 text-center">
-              Create your account, <strong>Sign up</strong>
+              Tạo mới tài khoản, <strong>Đăng ký ngay</strong>
             </h6>
             <div className="form__input">
               <i className="fa fa-user mr-2" aria-hidden="true"></i>
               <input
                 ref={username}
                 name="username"
-                placeholder="Enter your username"
+                placeholder="Tên đăng nhập"
               ></input>
             </div>
             <div className="form__input">
@@ -130,7 +130,7 @@ export function Register() {
                     ref={password}
                     name="password"
                     type="password"
-                    placeholder="Enter your password"
+                    placeholder="Mật khẩu"
                   ></input>
                 </div>
                 <div className="form__input">
@@ -138,7 +138,7 @@ export function Register() {
                     ref={repassword}
                     name="password"
                     type="password"
-                    placeholder="Re-password"
+                    placeholder="Xác nhận mật khẩu"
                   ></input>
                 </div>
               </div>
@@ -148,7 +148,7 @@ export function Register() {
               <input
                 ref={displayName}
                 name="username"
-                placeholder="Enter your display name"
+                placeholder="Tên hiển thị"
               ></input>
             </div>
             <div className="form__input">
@@ -156,41 +156,8 @@ export function Register() {
               <input
                 ref={email}
                 name="username"
-                placeholder="Enter your email"
+                placeholder="Địa chỉ email"
               ></input>
-            </div>
-            <div className="form__input">
-              <i
-                class="fa fa-male"
-                style={{ marginRight: "15px" }}
-                aria-hidden="true"
-              ></i>
-              <div className="group__select">
-                <div className="form__input form__select">
-                  <div
-                    onClick={() => setRole("student")}
-                    className={
-                      role === "student"
-                        ? "form__options__active"
-                        : "form__options"
-                    }
-                  >
-                    I'm Student
-                  </div>
-                </div>
-                <div className="form__input form__select">
-                  <div
-                    onClick={() => setRole("teacher")}
-                    className={
-                      role === "teacher"
-                        ? "form__options__active"
-                        : "form__options"
-                    }
-                  >
-                    I'm Teacher
-                  </div>
-                </div>
-              </div>
             </div>
             {submitState}
             <span
@@ -199,15 +166,15 @@ export function Register() {
                 paddingTop: "20px !important",
               }}
             >
-              <p>
-                Already have account ?{" "}
+              <p className="text-center">
+                Bạn đã có tài khoản ?{" "}
                 <strong
-                  onClick={() => window.location.replace("/auths/sign-in")}
+                  onClick={() => window.location.replace("/sign-in")}
                   style={{ cursor: "pointer", color: "red" }}
                 >
-                  Sign in
+                  Đăng nhập
                 </strong>{" "}
-                now !
+                ngay !
               </p>
             </span>
           </div>

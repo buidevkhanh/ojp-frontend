@@ -12,7 +12,7 @@ function CategoryForm(props) {
   const [action, setAction] = useState(AppAction.CREATE);
   const [current, setCurrent] = useState();
   const [file, setFile] = useState(null);
-  const [fileName, setFileName] = useState("No file uploaded");
+  const [fileName, setFileName] = useState("Không có file nào được chọn");
   const [toast, setToast] = useState(<></>);
   const [error, setError] = useState({});
   const categoryName = useRef();
@@ -148,17 +148,17 @@ function CategoryForm(props) {
   return (
     <>
       {toast}
-      <div class="col-md-8 grid-margin stretch-card">
-        <div class="card">
-          <div class="card-body">
+      <div className="col-md-8 grid-margin stretch-card">
+        <div className="card">
+          <div className="card-body">
             <div style={{ height: "300px", overflowY: "scroll" }}>
-              <h4 class="card-title">{props.title}</h4>
-              <p class="card-description">{props.description}</p>
-              <form class="forms-sample">
-                <div class="form-group">
+              <h4 className="card-title">{props.title}</h4>
+              <p className="card-description">{props.description}</p>
+              <form className="forms-sample">
+                <div className="form-group">
                   <label Htmlfor="exampleInputName1">
-                    Input Category Name
-                    <strong class="text-danger">
+                    Tên danh mục
+                    <strong className="text-danger">
                       {error.nameError ? error.nameError : " *"}
                     </strong>
                   </label>
@@ -176,15 +176,15 @@ function CategoryForm(props) {
                       );
                     }}
                     type="text"
-                    class="form-control"
+                    className="form-control"
                     id="exampleInputName1"
-                    placeholder="Problem Name"
+                    placeholder="Tên danh mục"
                   />
                 </div>
-                <div class="form-group">
+                <div className="form-group">
                   <label>
-                    Upload category logo
-                    <strong class="text-danger">
+                    Tải lên ảnh đại diện
+                    <strong className="text-danger">
                       {error.fileError ? error.fileError : " *"}
                     </strong>
                   </label>
@@ -198,46 +198,46 @@ function CategoryForm(props) {
                       delete error.fileError;
                       setError(JSON.parse(JSON.stringify(error)));
                     }}
-                    class="file-upload-default upload-logo"
+                    className="file-upload-default upload-logo"
                   />
-                  <div class="input-group col-xs-12">
+                  <div className="input-group col-xs-12">
                     <input
                       type="text"
-                      class="form-control file-upload-info"
+                      className="form-control file-upload-info"
                       disabled
                       placeholder={fileName}
                     />
-                    <span class="input-group-append">
+                    <span className="input-group-append">
                       <button
                         onClick={() => openFileBrowser()}
-                        class="file-upload-browse btn btn-primary"
+                        className="file-upload-browse btn btn-primary"
                         type="button"
                       >
-                        Upload
+                        Tải lên
                       </button>
                       <button
                         onClick={() => {
                           setFile(null);
-                          setFileName("No file uploaded");
+                          setFileName("Không có file nào được chọn");
                           const fileElm = document.querySelector("#file");
                           fileElm.value = null;
                         }}
-                        class="file-upload-browse btn btn-danger"
+                        className="file-upload-browse btn btn-danger"
                         type="button"
                       >
-                        Clear
+                        Xóa ảnh
                       </button>
                     </span>
                   </div>
                 </div>
                 <button
                   onClick={(event) => submitForm(event)}
-                  class="btn text-white btn-primary me-2"
+                  className="btn text-white btn-primary me-2"
                 >
-                  Submit
+                  Thêm
                 </button>
-                <button class="btn btn-light" onClick={() => props.closeForm()}>
-                  Cancel
+                <button className="btn btn-light" onClick={() => props.closeForm()}>
+                  Thoát
                 </button>
               </form>
             </div>

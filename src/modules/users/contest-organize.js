@@ -8,6 +8,7 @@ import { AppObject } from "../../configs/app.object";
 import { Toaster } from '../commons/toast';
 import { confirmAlert } from "react-confirm-alert"; 
 import "react-confirm-alert/src/react-confirm-alert.css";
+import { Loading } from "../commons/loading";
 
 export default function ContestOrganize() {
     const [detail, setDetail] = useState();
@@ -19,12 +20,14 @@ export default function ContestOrganize() {
     const [files, setFiles] = useState([]);
     const [toast, setToast] = useState(<></>);
     const [history, setHistory] = useState([]);
+    const [loading, setLoading] = useState();
 
     const token = getCookie("_token");
 
     useEffect(() => {
         const path = window.location.pathname;
         const contestId = path.split('/').at(-1);
+        setLoading(<Loading/>);
         if(!contestId.match(new RegExp('^[a-f0-9]{24,24}$'))) {
            window.location.replace('/home');
         }
@@ -47,7 +50,7 @@ export default function ContestOrganize() {
             setShow(initShow);
             socket.emit(AppObject.SOCKET_ACTIONS.JOIN_CONTEST, { contestId, token });
             userGetContestHistory(contestId).then((data) => {
-                const histories = data.data.history;
+                //const histories = data.data.history;
                 if(data.data.status === 'done') {
                     setDone(true);
                     userGetScore(contestId).then((data) => {
@@ -63,19 +66,33 @@ export default function ContestOrganize() {
                 for(let i = 0; i < newHistory.length; i++) {
                     newHistory[i].history = [];
                 }
-                userGetContestHistory(contestId).then((data) => {
-                    const histories = data.data.history;
+                
+                const histories = data.data.history;
 
-                    for(let i = 0; i < histories.length; i++) {
-                        const indexFound = newHistory.findIndex((item) => {
-                            return item.problem === histories[i].problem;
-                        })
-                        if(indexFound > -1) {
-                            newHistory[indexFound].history.push(histories[i]);
-                        }
+                for(let i = 0; i < histories.length; i++) {
+                    const indexFound = newHistory.findIndex((item) => {
+                        return item.problem === histories[i].problem;
+                    })
+                    if(indexFound > -1) {
+                        newHistory[indexFound].history.push(histories[i]);
                     }
-                    setHistory([...newHistory]);
-                })
+                }
+                setHistory([...newHistory]);
+                setLoading();
+                // userGetContestHistory(contestId).then((data) => {
+                //     const histories = data.data.history;
+
+                //     for(let i = 0; i < histories.length; i++) {
+                //         const indexFound = newHistory.findIndex((item) => {
+                //             return item.problem === histories[i].problem;
+                //         })
+                //         if(indexFound > -1) {
+                //             newHistory[indexFound].history.push(histories[i]);
+                //         }
+                //     }
+                //     setHistory([...newHistory]);
+                //     setLoading();
+                // })
             })
         })
     },[])
@@ -159,21 +176,23 @@ export default function ContestOrganize() {
 
     function finishContest() {
         confirmAlert({
-            title: "Finish this contest",
-            message: "Are you sure to do this ! This action can't be undo",
+            title: "Kết thúc bài thi",
+            message: "Bạn có chắc chắn muốn kết thúc bài làm này ? Kết quả sẽ được ghi nhận và bạn không thể tiếp tục làm bài thi",
             buttons: [
               {
-                label: "Yes",
+                label: "Đồng ý",
                 onClick: () => {
                     socket.emit('finish', {
                         token: token,
                         contest: detail._id
                     });
-                    window.location.reload();
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
                 },
               },
               {
-                label: "No",
+                label: "Không",
               },
             ],
         });
@@ -184,31 +203,31 @@ export default function ContestOrganize() {
         for(let i = 0; i < detail.questions.length; i++) {
             const item = detail.questions[i];
             questionDetail.push(
-                <div key={i} class="question px-2 py-2">
-                        <h4 class="m-0">
-                            <strong>Question {i + 1}: {item.problem.problemName} </strong>
-                            <p class="badge badge-opacity-success">{item.score} point</p>
+                <div key={i} className="question px-2 py-2">
+                        <h4 className="m-0">
+                            <strong>Câu hỏi {i + 1}: {item.problem.problemName} </strong>
+                            <p className="badge badge-opacity-success">{item.score} điểm</p>
                         </h4>
-                        <div class="content px-2 py-2" style={{border: '1px solid #e3e3e3'}}>
+                        <div className="content px-2 py-2" style={{border: '1px solid #e3e3e3'}}>
                             <div dangerouslySetInnerHTML={{ __html: item.problem.problemQuestion }}></div>
-                            <h5>Input contrains</h5>
-                            <p>{item.problem.expectedInput || 'No input contrains'}</p>
-                            <h5>Output expected</h5>
-                            <p>{item.problem.expectedOutput || 'No output contrains'}</p>
-                            <h5>Example</h5>    
-                            <p class="m-0">Input</p>
+                            <h5>Đầu vào</h5>
+                            <p>{item.problem.expectedInput || 'Không có yêu cầu đầu vào'}</p>
+                            <h5>Đầu ra</h5>
+                            <p>{item.problem.expectedOutput || 'Không có yêu cầu đầu ra'}</p>
+                            <h5>Ví dụ</h5>    
+                            <p className="m-0">Đầu vào</p>
                             <pre>{item.problem.example.input}</pre>
-                            <p class="m-0">Output</p>
+                            <p className="m-0">Đầu ra</p>
                             <pre>{item.problem.example.output}</pre>
-                            <div class="submit-form text-right">
-                                <label htmlFor={`index${i}`} class="w-75" style={{fontSize: '14px'}}>
-                                    <span class="d-inline-block text-left" style={{padding: '5px 20px', width: '89%', border: '1px solid #e3e3e3', color: 'black'}}>{isDone ? 'Blocked upload because contest ended': files[i]?.name || "No file choosen"}</span>
+                            <div className="submit-form text-right">
+                                <label htmlFor={`index${i}`} className="w-75" style={{fontSize: '14px'}}>
+                                    <span className="d-inline-block text-left" style={{padding: '5px 20px', width: '89%', border: '1px solid #e3e3e3', color: 'black'}}>{isDone ? 'Không thể upload do bài thi đã kết thúc': files[i]?.name || "Không có file nào được chọn"}</span>
                                 </label>
                                 { !isDone ?
-                                <span class="d-inline-block text-center cursor" style={{ padding: '5px 0px', width: '9%', background: '#34b1aa', border: '1px solid #34b1aa', color: 'white', fontSize: '14px'}}
-                                onClick={() => handleSubmit(i, item)}>Submit</span>
+                                <span className="d-inline-block text-center cursor" style={{ padding: '5px 0px', width: '9%', background: '#34b1aa', border: '1px solid #34b1aa', color: 'white', fontSize: '14px'}}
+                                onClick={() => handleSubmit(i, item)}>Gửi bài</span>
                                 : 
-                                <span class="d-inline-block text-center cursor" style={{ padding: '5px 0px', width: '9%', background: '#e3e3e3', border: '3px solid #e3e3e3e', color: 'white', fontSize: '14px'}}>Ended</span>
+                                <span className="d-inline-block text-center cursor" style={{ padding: '5px 0px', width: '9%', background: '#e3e3e3', border: '3px solid #e3e3e3e', color: 'white', fontSize: '14px'}}>Kết thúc</span>
                                 }
                                 { 
                                 !isDone ?
@@ -216,40 +235,44 @@ export default function ContestOrganize() {
                                 : null
                                 }
                             </div>
-                            <div class="history">
-                                <h5 class="text-secondary">
-                                    Submit history
+                            <div className="history">
+                                <h5 className="text-secondary">
+                                    Lịch sử submit
                                     { !show[i] ?
-                                    <i class="fa fa-caret-down mx-2" onClick={() => {show[i] = !show[i]; setShow([...show])}} aria-hidden="true"></i>
+                                    <i className="fa fa-caret-down mx-2" onClick={() => {show[i] = !show[i]; setShow([...show])}} aria-hidden="true"></i>
                                     :
-                                    <i class="fa fa-caret-up mx-2" onClick={() => {show[i] = !show[i]; setShow([...show])}} aria-hidden="true"></i>
+                                    <i className="fa fa-caret-up mx-2" onClick={() => {show[i] = !show[i]; setShow([...show])}} aria-hidden="true"></i>
                                     }
                                 </h5>
                                 { show[i] ?
-                                <ul class="m-0 p-0 border" style={{listStyle: 'none'}}>
-                                    <li class="submission d-flex w-100 py-3 justify-content-center align-items-center" style={{background: '#f5f6f4'}}>
-                                        <div style={{width: '25%'}} class="text-center">Submission ID</div>
-                                        <div style={{width: '45%'}} class="text-center">Timestamp</div>
-                                        <div style={{width: '10%'}} class="text-center">Execute</div>
-                                        <div style={{width: '20%'}} class="text-center">Result</div>
+                                <ul className="m-0 p-0 border" style={{listStyle: 'none'}}>
+                                    <li className="submission d-flex w-100 py-3 justify-content-center align-items-center" style={{background: '#f5f6f4'}}>
+                                        <div style={{width: '25%'}} className="text-center">ID</div>
+                                        <div style={{width: '25%'}} className="text-center">Tạo lúc</div>
+                                        <div style={{width: '20%'}} className="text-center">Ngôn ngữ</div>
+                                        <div style={{width: '10%'}} className="text-center">Thời gian thực thi</div>
+                                        <div style={{width: '10%'}} className="text-center">Tỉ lệ qua</div>
+                                        <div style={{width: '20%'}} className="text-center">Kết quả</div>
                                     </li>
                                     {
                                         history[i].history.map((item, index) => {
                                             return (
-                                                <li key={index} class="submission d-flex w-100 py-3 justify-content-center align-items-center">
-                                                    <div style={{width: '25%'}} class="text-center">{item._id}</div>
-                                                    <div style={{width: '45%'}} class="text-center">{item.createdAt}</div>
-                                                    <div style={{width: '10%'}} class="text-center">{item.executeTime}</div>
+                                                <li key={index} className="submission d-flex w-100 py-3 justify-content-center align-items-center">
+                                                    <div style={{width: '25%'}} className="text-center">{item._id}</div>
+                                                    <div style={{width: '25%'}} className="text-center">{item.createdAt}</div>
+                                                    <div style={{width: '20%'}} className="text-center">{item.language}</div>
+                                                    <div style={{width: '10%'}} className="text-center">{item.executeTime}</div>
+                                                    <div style={{width: '10%'}} className="text-center">{item.passPercent}%</div>
                                                     { item.status === 'Accepted' ?
-                                                        <div style={{width: '20%'}} class="text-center text-success">{item.status}</div>
+                                                        <div style={{width: '20%'}} className="text-center text-success">{item.status}</div>
                                                     : 
                                                       item.status === 'pending' ? 
-                                                      <div  style={{width: '20%'}} class="text-center">
-                                                        <div style={{width: '20px',height: '20px'}} class="spinner-border text-primary" role="status">
-                                                            <span class="sr-only">Loading...</span>
+                                                      <div  style={{width: '20%'}} className="text-center">
+                                                        <div style={{width: '20px',height: '20px'}} className="spinner-border text-primary" role="status">
+                                                            <span className="sr-only">Loading...</span>
                                                         </div>
                                                       </div>
-                                                    :  <div style={{width: '20%'}} class="text-center text-danger">{item.status !== 'Time limited execeeded' ? item.status : 'TLE'}</div>
+                                                    :  <div style={{width: '20%'}} className="text-center text-danger">{item.status !== 'Time limited execeeded' ? item.status : 'TLE'}</div>
                                                     }   
                                                 </li>
                                             )
@@ -265,26 +288,27 @@ export default function ContestOrganize() {
     }
     return (
         <>
+            {loading}
             <NavigationBar scope="limited"/>
             {toast}
-            <div class="container position-relative">
-                <div class="container shadow my-2 mt-5 p-3">
-                    <div class="point-info text-left">
-                        { isDone ? <h5>Total point: <span class="text-danger">{score}</span></h5> : null }
-                        { isDone ? <p class="text-success">Time: {time}</p> : null}
+            <div className="container position-relative">
+                <div className="container shadow my-2 mt-5 p-3">
+                    <div className="point-info text-left">
+                        { isDone ? <h5>Điểm đạt được: <span className="text-danger">{score}</span></h5> : null }
+                        { isDone ? <p className="text-success">Thời gian làm bài: {time}</p> : null}
                     </div>
-                    <div class="contest-info w-100 text-center" style={{lineHeight: '25px', fontWeight: 'bold'}}>
-                        <h3 class="text-secondary">{detail?.name || 'No contest name found'}</h3>
+                    <div className="contest-info w-100 text-center" style={{lineHeight: '25px', fontWeight: 'bold'}}>
+                        <h3 className="text-secondary">{detail?.name || 'No contest name found'}</h3>
                     </div>
                     {questionDetail}
                 </div>
                 { !isDone ?
-                <div class="w-50 text-center m-auto">
-                    <div class="my-2 btn btn-danger w-25" onClick={() => finishContest()}>Finish</div>
-                    <div class="my-2 btn btn-success w-25" onClick={() => window.location.replace('/home')}>Go home</div>
+                <div className="w-50 text-center m-auto">
+                    <div className="my-2 btn btn-danger w-25" onClick={() => finishContest()}>Kết thúc</div>
+                    <div className="my-2 btn btn-success w-25" onClick={() => window.location.replace('/home')}>Quay về</div>
                 </div> :
-                <div class="w-50 text-center m-auto">
-                    <div class="my-2 btn btn-success w-25" onClick={() => window.location.replace('/home')}>Go home</div>
+                <div className="w-50 text-center m-auto">
+                    <div className="my-2 btn btn-success w-25" onClick={() => window.location.replace('/home')}>Quay về</div>
                 </div>
                 } 
             </div>

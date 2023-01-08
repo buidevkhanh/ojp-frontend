@@ -25,8 +25,8 @@ export default function Activities() {
         <td
           class={
             calendarMap[i * 7 + j].getMonth() !== new Date().getMonth()
-              ? "no-relates"
-              : "relate"
+              ? "no-relates px-2"
+              : "relate px-2"
           }
           style={{ backgroundColor: "#e9eafa" }}
           id={calendarMap[i * 7 + j]}
@@ -40,17 +40,17 @@ export default function Activities() {
   }
   return (
     <>
-      <div class="w-100">
-        <div class="calendar__title text-center" style={{ fontWeight: "bold" }}>
+      <div className="w-100">
+        {/* <div className="calendar__title text-center" style={{ fontWeight: "bold" }}>
           {new Date().toUTCString().split(" ")[1] +
             "-" +
             new Date().toUTCString().split(" ")[2] +
             "," +
             new Date().toUTCString().split(" ")[3]}
-        </div>
-        <table class="w-100 mt-3 table-bordered" style={{ fontSize: "12px" }}>
+        </div> */}
+        <table className="w-100 mt-3 table-bordered" style={{ fontSize: "12px" }}>
           <tr>
-            <th class="text-danger">Sun</th>
+            <th className="text-danger">Sun</th>
             <th>Mon</th>
             <th>Tue</th>
             <th>Wed</th>
@@ -60,9 +60,9 @@ export default function Activities() {
           </tr>
           {renderUi}
         </table>
-        <div class="noti mt-3 d-flex justify-content-center">
+        <div className="noti mt-3 d-flex justify-content-center">
           <div
-            class="mx-1 text-white text-center"
+            className="mx-1 text-white text-center"
             style={{
               width: "70px",
               height: "20px",
@@ -74,7 +74,7 @@ export default function Activities() {
             Positive
           </div>
           <div
-            class=" mx-1 text-dark text-center"
+            className=" mx-1 text-dark text-center"
             style={{
               width: "70px",
               height: "20px",
@@ -86,7 +86,7 @@ export default function Activities() {
             Normal
           </div>
           <div
-            class="mx-1 text-dark text-center"
+            className="mx-1 text-dark text-center"
             style={{
               width: "70px",
               height: "20px",

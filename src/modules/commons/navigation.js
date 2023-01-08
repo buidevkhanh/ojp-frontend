@@ -11,7 +11,6 @@ export default function NavigationBar(props) {
       props?.setUser(data.data);
     });
     setPath(window.location.pathname.slice(1));
-    console.log(currentPath);
   }, []);
   function handleCanvasOpen() {
     const canvasBar = document.querySelector(".offcanvas__menu__wrapper");
@@ -37,7 +36,7 @@ export default function NavigationBar(props) {
   }
   function handleLogin() {
     setCookie('_prev', window.location.pathname);
-    window.location.replace("/auths/sign-in");
+    window.location.replace("/sign-in");
   }
   return (
     <>
@@ -58,22 +57,19 @@ export default function NavigationBar(props) {
                 currentPath === "" || currentPath === "home" ? "active" : ""
               }
             >
-              <a href="/">Home</a>
+              <a href="/">Trang chủ</a>
             </li>
             <li className={currentPath === "problem" ? "active" : ""}>
-              <a href="/problem">Problem</a>
+              <a href="/problem">Bài toán</a>
             </li>
             <li className={currentPath === "contest" ? "active" : ""}>
-              <a href="/contest">Contest</a>
+              <a href="/contest">Kỳ thi</a>
             </li>
             <li className={currentPath === "history" ? "active" : ""}>
-              <a href="/history">History</a>
+              <a href="/history">Lịch sử</a>
             </li>
-            <li className={currentPath === "course" ? "active" : ""}>
-              <a href="/course">Courses</a>
-            </li>
-            <li className={currentPath === "guide" ? "active" : ""}>
-              <a href="/guide">Guide</a>
+            <li className={currentPath === "ranking" ? "active" : ""}>
+              <a href="/ranking">Xếp hạng</a>
             </li>
           </ul>
         </nav> : null 
@@ -82,18 +78,13 @@ export default function NavigationBar(props) {
         <div className="offcanvas__auth">
           <ul>
             <li>
-              <a href="#">
-                <span className="icon_chat_alt"></span> Live chat
-              </a>
-            </li>
-            <li>
               { user ? 
               <span>
-                <img width={'20px'} height={'20px'} src={user.avatar} alt="user-avatar" style={{borderRadius: '50%'}}></img> {user.displayName}
+                <img width={'20px'} onClick={() => window.location.replace('/profile')} height={'20px'} src={user.avatar} alt="user-avatar" style={{borderRadius: '50%'}}></img> {user.displayName}
               </span> :
-              <a onClick={()=>handleLogin()} class="text-white">
+              <a onClick={()=>handleLogin()} className="text-white">
                 <span className="fa fa-user"></span>
-                <span class="cursor">Login / Register</span>
+                <span className="cursor">Đăng nhập | Đăng ký</span>
               </a>
               }
             </li>
@@ -102,10 +93,10 @@ export default function NavigationBar(props) {
         <div className="offcanvas__info">
           <ul>
             <li>
-              <span className="icon_phone"></span> +8437 369 8822
+              <i class="fa-solid fa-mobile-screen mx-2"></i> +8437 369 8822
             </li>
             <li>
-              <span className="fa fa-envelope"></span> buiduckhanh.dev@gmail.com
+            <i class="fa-regular fa-envelope mx-2"></i> buiduckhanh.dev@gmail.com
             </li>
           </ul>
         </div>
@@ -118,11 +109,10 @@ export default function NavigationBar(props) {
                 <div className="header__info-left">
                   <ul>
                     <li>
-                      <span className="icon_phone"></span> +8437 3698822
+                      <i class="fa-solid fa-mobile-screen mx-2"></i> +8437 369 8822
                     </li>
                     <li>
-                      <span className="fa fa-envelope"></span>{" "}
-                      buiduckhanh.dev@gmail.com
+                    <i class="fa-regular fa-envelope mx-2"></i> buiduckhanh.dev@gmail.com
                     </li>
                   </ul>
                 </div>
@@ -131,18 +121,13 @@ export default function NavigationBar(props) {
                 <div className="header__info-right">
                   <ul>
                     <li>
-                      <a href="https://fb.com/duckhanh4444">
-                        <span className="icon_chat_alt"></span> Live chat
-                      </a>
-                    </li>
-                    <li>
                     { user ? 
-                      <span class="text-white">
-                        <img class="mr-1" width={'26px'} height={'26px'} src={user.avatar} alt="user-avatar" style={{borderRadius: '50%'}}></img> {user.displayName}
+                      <span className="text-white">
+                        <img onClick={() => window.location.replace('/profile')} className="mr-1" width={'26px'} height={'26px'} src={user.avatar} alt="user-avatar" style={{borderRadius: '50%'}}></img> {user.displayName}
                       </span> :
-                      <a onClick={()=>handleLogin()} class="text-white cursor">
+                      <a onClick={()=>handleLogin()} className="text-white cursor">
                         <span className="fa fa-user"></span>
-                        Login / Register
+                        Đăng nhập | Đăng ký
                       </a>
                       }
                     </li>
@@ -165,7 +150,7 @@ export default function NavigationBar(props) {
                     fontWeight: "bold",
                   }}
                 >
-                  <span class="text-secondary">Online</span>Judge
+                  <span className="text-secondary">Online</span>Judge
                 </p>
               </div>
             </div> :
@@ -199,53 +184,43 @@ export default function NavigationBar(props) {
                     }
                   >
                     <a href="/">
-                      <i class="fa fa-home mx-1" aria-hidden="true"></i>
-                      Home
+                      <i className="fa fa-home mx-1" aria-hidden="true"></i>
+                      Trang chủ
                     </a>
                   </li>
                   <li className={currentPath === "problem" ? "active" : ""}>
                     <a href="/problem">
                       <i
-                        class="fa fa-list-alt mx-1"
+                        className="fa fa-list-alt mx-1"
                         style={{ fontSize: "14px" }}
                         aria-hidden="true"
                       ></i>
-                      Problem
+                      Bài toán
                     </a>
                   </li>
                   <li className={currentPath === "contest" ? "active" : ""}>
                     <a href="/contest">
                       <i
-                        class="fa fa-pencil-square-o mx-1"
+                        className="fa fa-pencil-square-o mx-1"
                         aria-hidden="true"
                       ></i>
-                      Contest
+                      Kỳ thi
                     </a>
                   </li>
                   <li className={currentPath === "history" ? "active" : ""}>
                     <a href="/history">
-                      <i class="fa fa-history mx-1" aria-hidden="true"></i>
-                      History
+                      <i className="fa fa-history mx-1" aria-hidden="true"></i>
+                      Lịch sử
                     </a>
                   </li>
-                  <li className={currentPath === "course" ? "active" : ""}>
-                    <a href="/course">
+                  <li className={currentPath === "ranking" ? "active" : ""}>
+                    <a href="/ranking">
                       <i
-                        class="fa fa-camera-retro mx-1"
+                        className="fa fa-camera-retro mx-1"
                         style={{ fontSize: "14px" }}
                         aria-hidden="true"
                       ></i>
-                      Courses
-                    </a>
-                  </li>
-                  <li className={currentPath === "guide" ? "active" : ""}>
-                    <a href="/guide">
-                      <i
-                        class="fa fa-map-signs mx-1"
-                        style={{ fontSize: "14px" }}
-                        aria-hidden="true"
-                      ></i>
-                      Guide
+                      Xếp hạng
                     </a>
                   </li>
                 </ul>

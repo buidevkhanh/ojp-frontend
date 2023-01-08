@@ -29123,16 +29123,6 @@ div.tagsinput span.tag a {
   padding: 0;
 }
 
-.sidebar .nav.sub-menu .nav-item::before {
-  content: '';
-  width: 5px;
-  height: 5px;
-  position: absolute;
-  margin-top: 16px;
-  border-radius: 50%;
-  background: #b2b2b2;
-}
-
 .sidebar .nav.sub-menu .nav-item .nav-link {
   color: #484848;
   padding: 0.7rem 1rem;

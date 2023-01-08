@@ -39,7 +39,7 @@ export function Login() {
             setCookie("_userNeedVerified", nameOrEmailTxt);
             callResendCode(getCookie("_userNeedVerified"))
               .then(() => {
-                window.location.replace("/auths/verify");
+                window.location.replace("/verify");
               })
               .catch((error) => {
                 setToast(
@@ -72,29 +72,29 @@ export function Login() {
           className="text-white mb-1 sub__welcome"
           style={{ fontWeight: "bold", visibility: "hidden" }}
         >
-          WELCOME<br></br>
-          Online Judge System
+          CHÀO MỪNG<br></br>
+          OnlineJudge
         </h3>
         <h6
           className="text__secondary pb-4 sub__welcome"
           style={{ visibility: "hidden" }}
         >
-          Learn to code every day
+          Luyện tập lập trình mỗi ngày
         </h6>
         <div className="auth__form text-start px-5 py-5 d-flex justify-content-center align-items-center flex-column">
           <h3 className="text__secondary   mb-3" style={{ fontWeight: "bold" }}>
-            Online Judge System
+            OnlineJudge
           </h3>
           <div className="w-100">
             <h6 className="auth__form__name text-left mb-3 text-center">
-              To use all services, please <strong>Sign in</strong> your account
+              Để sử dụng toàn bộ tính năng, Hãy <strong>đăng nhập</strong> tài khoản của bạn
             </h6>
             <div className="form__input">
               <i className="fa fa-user" aria-hidden="true"></i>
               <input
                 ref={nameOrEmail}
                 name="username"
-                placeholder="Enter your username or email "
+                placeholder="Tên đăng nhập hoặc email "
               ></input>
             </div>
             <div className="form__input">
@@ -103,31 +103,31 @@ export function Login() {
                 ref={password}
                 name="password"
                 type="password"
-                placeholder="Enter your password"
+                placeholder="Mật khẩu"
               ></input>
             </div>
             <div
               onClick={() => signIn()}
               className="form__input__submit text-center mt-3 mb-5"
             >
-              Signin
+              Đăng nhập
             </div>
             <span
-              className="text-secondary"
+              className="text-secondary text-center"
               style={{
                 fontSize: "10px !important",
                 paddingTop: "20px !important",
               }}
             >
               <p>
-                Don't have account ?{" "}
+                Bạn chưa có tài khoản ?{" "}
                 <strong
-                  onClick={() => window.location.replace("/auths/sign-up")}
+                  onClick={() => window.location.replace("/sign-up")}
                   style={{ cursor: "pointer", color: "red" }}
                 >
-                  Sign up
+                  Đăng ký
                 </strong>{" "}
-                now !
+                ngay !
               </p>
             </span>
           </div>
