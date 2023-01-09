@@ -21,6 +21,8 @@ export default function ContestOrganize() {
     const [toast, setToast] = useState(<></>);
     const [history, setHistory] = useState([]);
     const [loading, setLoading] = useState();
+    const [prev, setPrev] = useState();
+    const [pending, setPending] = useState();
 
     const token = getCookie("_token");
 
@@ -34,9 +36,12 @@ export default function ContestOrganize() {
         userGetDetailContest(contestId).then((data) => {
             setDetail(data.data);
             const newFiles = [];
+            const newPending = [];
             for(let i = 0; i < data.data.questions.length; i++) {
                 newFiles.push(null);
+                newPending.push(false);
             }
+            setPending(newPending);
             setFiles(newFiles);
             const initShow = [];
             for(let i = 0; i < data.data.questions.length; i++) {
@@ -51,6 +56,7 @@ export default function ContestOrganize() {
             socket.emit(AppObject.SOCKET_ACTIONS.JOIN_CONTEST, { contestId, token });
             userGetContestHistory(contestId).then((data) => {
                 //const histories = data.data.history;
+                setPrev(data.data.history.length);
                 if(data.data.status === 'done') {
                     setDone(true);
                     userGetScore(contestId).then((data) => {
@@ -121,6 +127,10 @@ export default function ContestOrganize() {
                     newHistory[indexFound].history.push(histories[i]);
                 }
             }
+            if(histories.length > prev) {
+                setPending([...pending.map(() => false)]);
+                setPrev(histories.length);
+            }
             setHistory([...newHistory]);
         })
     })
@@ -141,6 +151,9 @@ export default function ContestOrganize() {
 
     function handleSubmit(i, item) {
         if(isDone) return;
+        pending[i] = true;
+        setPending([...pending]);
+        document.querySelector('#index'.concat(i)).value = null;
         const nameParts = files[i].name.split(".");
         let language = "";
         if(nameParts.length >= 2) {
@@ -188,7 +201,7 @@ export default function ContestOrganize() {
                     });
                     setTimeout(() => {
                         window.location.reload();
-                    }, 2000);
+                    }, 4000);
                 },
               },
               {
@@ -223,9 +236,16 @@ export default function ContestOrganize() {
                                 <label htmlFor={`index${i}`} className="w-75" style={{fontSize: '14px'}}>
                                     <span className="d-inline-block text-left" style={{padding: '5px 20px', width: '89%', border: '1px solid #e3e3e3', color: 'black'}}>{isDone ? 'Không thể upload do bài thi đã kết thúc': files[i]?.name || "Không có file nào được chọn"}</span>
                                 </label>
-                                { !isDone ?
+                                { !isDone ? 
+                                !pending?.[i] ?
                                 <span className="d-inline-block text-center cursor" style={{ padding: '5px 0px', width: '9%', background: '#34b1aa', border: '1px solid #34b1aa', color: 'white', fontSize: '14px'}}
                                 onClick={() => handleSubmit(i, item)}>Gửi bài</span>
+                                : 
+                                <span className="d-inline-block text-center cursor" style={{ padding: '5px 0px', width: '9%', background: '#34b1aa', border: '1px solid #34b1aa', color: 'white', fontSize: '14px'}}>
+                                    <span class="spinner-border text-light" style={{width: '15px', height: '15px'}}role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </span>
+                                </span>
                                 : 
                                 <span className="d-inline-block text-center cursor" style={{ padding: '5px 0px', width: '9%', background: '#e3e3e3', border: '3px solid #e3e3e3e', color: 'white', fontSize: '14px'}}>Kết thúc</span>
                                 }
@@ -245,7 +265,7 @@ export default function ContestOrganize() {
                                     }
                                 </h5>
                                 { show[i] ?
-                                <ul className="m-0 p-0 border" style={{listStyle: 'none'}}>
+                                <ul className="m-0 p-0 border" style={{listStyle: 'none', minWidth: '800px', overflowX: 'scroll'}}>
                                     <li className="submission d-flex w-100 py-3 justify-content-center align-items-center" style={{background: '#f5f6f4'}}>
                                         <div style={{width: '25%'}} className="text-center">ID</div>
                                         <div style={{width: '25%'}} className="text-center">Tạo lúc</div>

@@ -148,6 +148,7 @@ function AddProblem(props) {
       setToast(
         <Toaster message={"Testcase rỗng"} type="error" />
       );
+      return;
     }
     if (props.action === AppAction.UPDATE) {
       const update = {

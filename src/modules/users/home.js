@@ -79,6 +79,7 @@ function UserHome() {
     : null;
   const renderProblemList = problemList
     ? problemList.map((item, index) => {
+        console.log(item);
         return (
           <li key="index" onClick={()=> window.location.replace(`/problem/detail/${item.problemCode}`)}className="px-2 py-3 new__problem cursor m-auto" style={{borderBottom: '1px solid #e6e6e6'}}>
             <div className="w-100">

@@ -73,7 +73,7 @@ export default function UserRunner(props) {
             <div style={{height: '420px', maxHeight: '420px', width: '35%', backgroundColor: 'white'}}>
                 <div className="form-group position-relative w-100 text-right mr-1 mb-2 px-4 py-4">
                     <div style={{position: 'absolute', right: '10px', top: '10px'}} onClick={() => handleClose()}>
-                    <i className="fa text-danger fa-times-circle-o" style={{fontSize: '25px'}} aria-hidden="true"></i>
+                    <i className="fas text-danger fa-times-circle" style={{fontSize: '25px'}} aria-hidden="true"></i>
                     </div>
                     <div className="text-left"><p>Input Test:</p></div>
                     <textarea
