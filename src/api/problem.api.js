@@ -9,11 +9,11 @@ import {
 } from "../configs/app.config";
 import { getCookie } from "../helpers/cookie.helper";
 
-export function callGetProblem(page, name) {
+export function callGetProblem(page, name, status) {
   const token = getCookie("__token");
   return new Promise((resolve, reject) => {
     axios({
-      url: `${SERVER_HOST}${SERVER_PREFIX}/admin/problem?page=${page}&pageSize=-1&name=${name || null}`,
+      url: `${SERVER_HOST}${SERVER_PREFIX}/admin/problem?page=${page}&pageSize=-1&name=${name || ''}&status=${status || ''}`,
       method: GET,
       headers: {
         Authorization: `Bearer ${token}`,

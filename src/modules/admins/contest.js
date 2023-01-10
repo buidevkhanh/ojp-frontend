@@ -50,7 +50,7 @@ export default function Contest() {
             <td style={{ width: "5%"}}>{item.duration}</td>
             <td style={{ width: "10%" }}>{calcStt(item.beginAt, item.duration)}</td>
             <td style={{ width: "10%" }}>{new Date(item.createdAt).toLocaleString()}</td>
-            <td><div className="btn btn-success m-auto text-white">Kết quả</div></td>
+            <td></td>
         </tr>)
     }): null;
     return (

@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { callCreateContest } from "../../../api/contest.api";
-import { callGetProblem } from "../../../api/problem.api";
+import { callGetProblem, userGetProblem } from "../../../api/problem.api";
 import { Toaster } from "../../commons/toast";
 
 export default function ContestForm(props) {
@@ -69,14 +69,15 @@ export default function ContestForm(props) {
 
     function handleInputChange(event) {
         setQuery(event.target.value);
-        callGetProblem(1,event.target.value).then((data) => {
+        callGetProblem(1,event.target.value, 'active').then((data) => {
             setResult(data.data.data);
         })
     }
 
     function handlePreview(content) {
+        document.querySelector('#search__prb').value = "";
         const preview = document.querySelector('#contest__problem__preview');
-        preview.innerHTML = content.problemQuestion ;
+        preview.innerHTML = `<strong> Bài toán: ${content.problemName}<strong><br/>${content.problemQuestion}` ;
         setQuery(null);
         setId(content._id);
         setName(content.problemName);
@@ -154,7 +155,7 @@ export default function ContestForm(props) {
                             ref={name}
                             type="text"
                             className="form-control"
-                            placeholder="Input contest name"
+                            placeholder="Tên bài thi"
                         />
                         </div>
                         <div className="d-flex flex-column justify-content-center align-items-center">
@@ -201,7 +202,7 @@ export default function ContestForm(props) {
                         <label style={{fontSize: '13px'}}>Tìm bài toán</label>
                         <div className="form-group d-flex">
                             <div className="w-100 dynamic__search position-relative">
-                                <input type="text" onChange={(event) => handleInputChange(event)} className="custom__input__1 w-100 mb-0" placeholder="Enter problem name"></input>
+                                <input type="text" onChange={(event) => handleInputChange(event)} id="search__prb" className="custom__input__1 w-100 mb-0" placeholder="Tìm kiếm bài toán"></input>
                                 {query?.trim() ? 
                                     <ul className="dynamic__result position-absolute top-25 border w-100 p-0" style={{listStyle:'none', zIndex: '1000', backgroundColor: 'white'}}>
                                         {handleProblem?.length > 0 ? handleProblem : <div className="text-center py-2">Không tìm thấy bài toán</div>}

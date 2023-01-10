@@ -104,10 +104,11 @@ function AddProblem(props) {
     if (!inp.current.value && !oup.current.value) {
       setToast(
         <Toaster
-          message={"Testcase's input and output can't be blank"}
+          message={"Yêu cầu tối thiểu một testcase"}
           type="error"
         />
       );
+      return;
     } else {
       setAddList([
         ...addList,
@@ -117,6 +118,8 @@ function AddProblem(props) {
         ...testcases,
         { input: inp.current.value, output: oup.current.value },
       ]);
+      inp.current.value = "";
+      oup.current.value = "";
     }
   }
   function removeTestcase(index, id) {
@@ -146,7 +149,7 @@ function AddProblem(props) {
     const cases = testcases;
     if(cases.length === 0) {
       setToast(
-        <Toaster message={"Testcase rỗng"} type="error" />
+        <Toaster message={"Yêu cầu tối thiểu một testcase"} type="error" />
       );
       return;
     }
@@ -242,8 +245,7 @@ function AddProblem(props) {
                     ref={problemName}
                     type="text"
                     className="form-control"
-                    id="exampleInputName1"
-                    placeholder="Problem Name"
+                    placeholder="Tên bài toán"
                   />
                 </div>
                 <div className="form-group">

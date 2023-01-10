@@ -152,7 +152,7 @@ export function Register() {
               ></input>
             </div>
             <div className="form__input">
-              <i className="fa fa-envelope-o" aria-hidden="true"></i>
+              <i className="fas fa-envelope ml-1" aria-hidden="true"></i>
               <input
                 ref={email}
                 name="username"

@@ -70,7 +70,7 @@ function Problem() {
   function changeStatus(id) {
     callChangeStatus(id)
       .then(() => {
-        setToast(<Toaster message={"change success"} type="success" />);
+        setToast(<Toaster message={"Thành công"} type="success" />);
         closeForm();
       })
       .catch((error) => {
