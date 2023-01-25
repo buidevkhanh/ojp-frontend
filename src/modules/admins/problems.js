@@ -63,10 +63,12 @@ function Problem() {
       ></Form>
     );
   }
+
   function closeForm() {
     refreshProblem();
     setForm(<></>);
   }
+ 
   function changeStatus(id) {
     callChangeStatus(id)
       .then(() => {
